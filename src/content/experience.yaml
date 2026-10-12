@@ -1,0 +1,11 @@
+- id: hedefsan
+  role: Frontend Developer
+  company: Hedefsan Elektronik
+  type: Internship
+  location: Istanbul, Turkey
+  mode: Hybrid
+  start: 2023-09-01
+  end: 2023-11-30
+  highlights:
+    - Worked on the production frontend codebase with React and TypeScript.
+  skills: [TypeScript, React]

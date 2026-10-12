@@ -1,0 +1,36 @@
+- id: mongodb-associate-developer
+  name: MongoDB Certified Associate Developer
+  issuer: MongoDB
+  date: 2025-10-01
+  url: https://learn.mongodb.com/c/2lcaEMWKSmCJivs_RnMRKw
+  icon: MongoDB
+- id: ibm-full-stack-javascript
+  name: IBM Full-Stack JavaScript Developer Professional Certificate
+  issuer: IBM
+  date: 2025-08-01
+  url: https://www.coursera.org/account/accomplishments/specialization/certificate/70K4RLFYS647
+  icon: IBM
+- id: docker-foundations
+  name: Docker Foundations Professional Certificate
+  issuer: Docker
+  date: 2025-05-01
+  url: https://www.linkedin.com/learning/certificates/17942d649ab25508909de8cf4cdbbb2d296c2b78280d9c52ddbec91c719e44ff/
+  icon: Docker
+- id: websocket-node-angular
+  name: WebSocket Communications with Node and Angular
+  issuer: LinkedIn Learning
+  date: 2025-04-01
+  url: https://www.linkedin.com/learning/certificates/782fbbb3f20351b2f1d5e5854e3b368273bdd926f53470bd253927dae8231b16/
+  icon: LinkedIn
+- id: angularjs-jhu
+  name: AngularJS
+  issuer: Johns Hopkins University
+  date: 2024-11-01
+  url: https://coursera.org/verify/IS73KXNU912Z
+  icon: Johns Hopkins University
+- id: angular-hackerrank
+  name: Angular (Intermediate)
+  issuer: HackerRank
+  date: 2024-10-01
+  url: https://www.hackerrank.com/certificates/0db409d65f62
+  icon: HackerRank

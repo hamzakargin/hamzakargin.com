@@ -1,0 +1,20 @@
+---
+import BrandIcon from "@/components/layout/BrandIcon.astro";
+import { badgeVariants } from "@/components/ui/badge";
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+<span
+  class={badgeVariants({
+    variant: "outline",
+    className: "h-6 gap-1.5 border-foreground/15! px-2.5 font-mono text-[13px]",
+  })}
+>
+  <BrandIcon name={name} class="size-3.5 text-muted-foreground" />
+  {name}
+</span>

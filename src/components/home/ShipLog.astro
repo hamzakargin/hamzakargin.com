@@ -6,11 +6,13 @@ import LogList from "@/components/log/LogList.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { getLogEntries } from "@/lib/log";
 
-const entries = (await getLogEntries()).slice(0, 6);
+const allEntries = await getLogEntries();
+const total = allEntries.length;
+const entries = allEntries.slice(0, 6);
 ---
 
 <Section id="log" class="flex flex-col items-center gap-10 py-16 md:py-24">
-  <SectionHeading title="Ship log" description="What I’ve shipped, by date." />
+  <SectionHeading title="Ship log" count={total} />
   <div class="w-full max-w-3xl">
     <LogList entries={entries} />
   </div>

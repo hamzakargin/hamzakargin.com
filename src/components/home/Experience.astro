@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import { Building2 } from "lucide-react";
+import Section from "@/components/layout/Section.astro";
+import SectionHeading from "@/components/layout/SectionHeading.astro";
+import TimelineItem from "@/components/layout/TimelineItem.astro";
+import { formatDuration, formatRange } from "@/lib/format";
+
+const experience = (await getCollection("experience")).toSorted(
+  (a, b) => b.data.start.valueOf() - a.data.start.valueOf(),
+);
+---
+
+<Section id="experience" class="flex flex-col items-center gap-10 py-16 md:py-24">
+  <SectionHeading title="Experience" />
+  <ul class="flex w-full max-w-3xl flex-col divide-y divide-border border-y border-border">
+    {
+      experience.map(({ data }) => (
+        <li class="flex flex-col gap-4 py-5">
+          <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+            <p class="flex items-center gap-2.5 text-lg font-semibold tracking-tight">
+              <span
+                aria-hidden="true"
+                class="flex size-6 items-center justify-center rounded-full bg-foreground text-background"
+              >
+                <Building2 className="size-3.5" />
+              </span>
+              {data.company}
+            </p>
+            <p class="text-sm text-muted-foreground">
+              {data.location} ({data.mode})
+            </p>
+          </div>
+          <TimelineItem
+            title={data.role}
+            meta={[data.type, formatRange(data.start, data.end), formatDuration(data.start, data.end)]}
+            highlights={data.highlights}
+            skills={data.skills}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</Section>

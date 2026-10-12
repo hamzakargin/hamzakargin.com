@@ -1,0 +1,29 @@
+---
+import { ArrowUpRight } from "lucide-react";
+
+interface Props {
+  href?: string;
+}
+
+const { href } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+
+<Tag
+  href={href}
+  class:list={[
+    "group flex items-center gap-4 py-3.5",
+    href &&
+      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+  ]}
+>
+  <slot name="icon" />
+  <div class="flex min-w-0 flex-1 flex-col gap-1">
+    <slot />
+  </div>
+  {
+    href && (
+      <ArrowUpRight className="size-4 shrink-0 text-muted-foreground motion-safe:transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5 group-hover:text-foreground" />
+    )
+  }
+</Tag>

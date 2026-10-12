@@ -1,0 +1,19 @@
+---
+import { Award } from "lucide-react";
+import BrandIcon from "@/components/layout/BrandIcon.astro";
+import { getIcon } from "@/lib/icons";
+
+interface Props {
+  brand?: string;
+  icon?: typeof Award;
+}
+
+const { brand, icon: Icon = Award } = Astro.props;
+---
+
+<span
+  aria-hidden="true"
+  class="flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground"
+>
+  {getIcon(brand) ? <BrandIcon name={brand} class="size-5" /> : <Icon className="size-5" />}
+</span>

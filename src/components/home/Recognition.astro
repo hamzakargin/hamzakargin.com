@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import IconTile from "@/components/layout/IconTile.astro";
+import Meta from "@/components/layout/Meta.astro";
+import Row from "@/components/layout/Row.astro";
+import Section from "@/components/layout/Section.astro";
+import SectionHeading from "@/components/layout/SectionHeading.astro";
+import { formatMonth } from "@/lib/format";
+
+const certifications = (await getCollection("certifications")).toSorted(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Section id="recognition" class="flex flex-col items-center gap-10 py-16 md:py-24">
+  <SectionHeading title="Recognition" count={certifications.length} />
+  <ul class="flex w-full max-w-3xl flex-col divide-y divide-border border-y border-border">
+    {
+      certifications.map(({ data }) => (
+        <li>
+          <Row href={data.url}>
+            <IconTile slot="icon" brand={data.icon} />
+            <p class="font-medium text-pretty underline-offset-4 group-hover:underline">{data.name}</p>
+            <Meta badge="Certificate" items={[`@${data.issuer}`, formatMonth(data.date)]} />
+          </Row>
+        </li>
+      ))
+    }
+  </ul>
+</Section>

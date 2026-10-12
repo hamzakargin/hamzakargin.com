@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { ArrowUpRight } from "lucide-react";
 import { badgeVariants } from "@/components/ui/badge";
-import { formatLogDate } from "@/lib/log";
+import { formatMonth } from "@/lib/format";
 
 interface Props {
   entries: CollectionEntry<"log">[];
@@ -33,7 +33,7 @@ const { entries } = Astro.props;
               datetime={data.date.toISOString()}
               class="text-sm text-muted-foreground tabular-nums"
             >
-              {formatLogDate(data.date)}
+              {formatMonth(data.date)}
             </time>
             <span class={badgeVariants({ variant: "outline", className: "font-mono" })}>
               {data.label}

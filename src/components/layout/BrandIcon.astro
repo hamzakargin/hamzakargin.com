@@ -1,0 +1,19 @@
+---
+import { getIcon } from "@/lib/icons";
+
+interface Props {
+  name?: string;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+const icon = getIcon(name);
+---
+
+{
+  icon && (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" class:list={["shrink-0", className]}>
+      <path d={icon.path} fill-rule={icon.fillRule} />
+    </svg>
+  )
+}

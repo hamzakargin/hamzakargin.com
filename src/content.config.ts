@@ -1,5 +1,5 @@
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const blog = defineCollection({
@@ -42,4 +42,58 @@ const log = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, log };
+const experience = defineCollection({
+  loader: file("./src/content/experience.yaml"),
+  schema: z.object({
+    role: z.string(),
+    company: z.string(),
+    type: z.string(),
+    location: z.string(),
+    mode: z.string(),
+    start: z.coerce.date(),
+    end: z.coerce.date().optional(),
+    highlights: z.array(z.string()).default([]),
+    skills: z.array(z.string()).default([]),
+  }),
+});
+
+const education = defineCollection({
+  loader: file("./src/content/education.yaml"),
+  schema: z.object({
+    school: z.string(),
+    degree: z.string(),
+    field: z.string(),
+    start: z.coerce.date(),
+    end: z.coerce.date().optional(),
+    skills: z.array(z.string()).default([]),
+  }),
+});
+
+const certifications = defineCollection({
+  loader: file("./src/content/certifications.yaml"),
+  schema: z.object({
+    name: z.string(),
+    issuer: z.string(),
+    date: z.coerce.date(),
+    url: z.url().optional(),
+    icon: z.string().optional(),
+  }),
+});
+
+const stack = defineCollection({
+  loader: file("./src/content/stack.yaml"),
+  schema: z.object({
+    name: z.string(),
+    items: z.array(z.string()),
+  }),
+});
+
+export const collections = {
+  blog,
+  projects,
+  log,
+  experience,
+  education,
+  certifications,
+  stack,
+};

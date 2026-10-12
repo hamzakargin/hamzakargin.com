@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import Chip from "@/components/layout/Chip.astro";
+import Section from "@/components/layout/Section.astro";
+import SectionHeading from "@/components/layout/SectionHeading.astro";
+
+const order = ["language", "frontend", "backend", "testing", "infra", "tools"];
+const groups = (await getCollection("stack")).toSorted(
+  (a, b) => order.indexOf(a.id) - order.indexOf(b.id),
+);
+---
+
+<Section id="stack" class="flex flex-col items-center gap-10 py-16 md:py-24">
+  <SectionHeading title="Stack" />
+  <dl class="w-full max-w-3xl divide-y divide-border border-y border-border">
+    {
+      groups.map(({ data }, index) => (
+        <div class="grid sm:grid-cols-[13rem_1fr]">
+          <dt class="flex items-baseline gap-2 pt-4 pb-2 sm:border-r sm:border-border sm:py-4">
+            <span class="font-mono text-muted-foreground tabular-nums">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span class="font-medium">{data.name}</span>
+          </dt>
+          <dd class="pb-4 sm:py-4 sm:pl-4">
+            <ul class="flex flex-wrap gap-2">
+              {data.items.map((item) => (
+                <li>
+                  <Chip name={item} />
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</Section>

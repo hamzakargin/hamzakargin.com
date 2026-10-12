@@ -1,0 +1,54 @@
+---
+import { Code } from "lucide-react";
+import Meta from "@/components/layout/Meta.astro";
+import Chip from "@/components/layout/Chip.astro";
+
+interface Props {
+  title: string;
+  meta: (string | undefined)[];
+  highlights?: string[];
+  skills?: string[];
+  icon?: typeof Code;
+}
+
+const { title, meta, highlights = [], skills = [], icon: Icon = Code } = Astro.props;
+---
+
+<div class="relative pb-2 pl-9">
+  <span
+    aria-hidden="true"
+    class="absolute top-0 left-0 flex size-6 items-center justify-center rounded-md border border-border bg-muted/50 text-muted-foreground"
+  >
+    <Icon className="size-3.5" />
+  </span>
+  <span aria-hidden="true" class="absolute top-8 bottom-0 left-3 w-px bg-border"></span>
+  <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-0.5">
+      <p class="leading-6 font-medium">{title}</p>
+      <Meta items={meta} />
+    </div>
+    {
+      highlights.length > 0 && (
+        <ul class="flex flex-col gap-1.5 text-sm">
+          {highlights.map((item) => (
+            <li class="flex gap-2.5">
+              <span aria-hidden="true" class="mt-2 size-1 shrink-0 rounded-full bg-muted-foreground/60" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {
+      skills.length > 0 && (
+        <ul class="flex flex-wrap gap-2">
+          {skills.map((skill) => (
+            <li>
+              <Chip name={skill} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</div>

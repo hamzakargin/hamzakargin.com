@@ -1,0 +1,30 @@
+- id: language
+  name: Language
+  items: [TypeScript, JavaScript]
+- id: frontend
+  name: Frontend
+  items:
+    [
+      React,
+      Next.js,
+      Astro,
+      Angular,
+      Expo,
+      Tailwind CSS,
+      Redux Toolkit,
+      TanStack Query,
+      Zustand,
+      Jotai,
+    ]
+- id: backend
+  name: Backend & Database
+  items: [Node.js, Bun, Express, NestJS, Socket.IO, GraphQL, PostgreSQL, MongoDB, Prisma, Drizzle]
+- id: testing
+  name: Testing
+  items: [Jest, React Testing Library, Playwright, Cypress]
+- id: infra
+  name: Infrastructure
+  items: [Docker, Traefik, GitHub Actions, Vercel]
+- id: tools
+  name: Tools
+  items: [Git, GitHub, Vite, Webpack, Storybook, Postman, Figma]
