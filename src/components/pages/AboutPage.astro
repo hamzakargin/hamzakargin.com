@@ -1,0 +1,138 @@
+---
+import "@fontsource/caveat/600.css";
+import { Image } from "astro:assets";
+import { Clock, Mail, MapPin } from "lucide-react";
+import me from "@/assets/me.png";
+import BrandIcon from "@/components/layout/BrandIcon.astro";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
+import Section from "@/components/layout/Section.astro";
+import { buttonVariants } from "@/components/ui/button";
+import Layout from "@/layouts/Layout.astro";
+import { site } from "@/lib/site";
+import { getLocale, useTranslations } from "@/i18n/utils";
+import { intlLocales } from "@/i18n/ui";
+
+
+
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
+
+const socials = [
+  { name: "GitHub", href: site.github },
+  { name: "LinkedIn", href: site.linkedin },
+  { name: "X", href: site.x },
+  { name: "YouTube", href: site.youtube },
+];
+
+---
+
+<Layout title={`${t("about.title")} · Hamza Kargin`} description={t("about.description")}>
+  <Section class="flex flex-col gap-10 py-12 md:py-20">
+    <div class="mx-auto flex w-full max-w-2xl flex-col gap-10">
+      <Breadcrumbs items={[{ label: t("about.title") }]} />
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
+        <Image
+          src={me}
+          alt="Hamza Kargin"
+          width={224}
+          height={224}
+          loading="eager"
+          class="size-28 rounded-full border border-border object-cover object-top"
+        />
+        <div class="flex flex-col gap-3">
+          <div>
+            <h1 class="text-4xl font-extrabold tracking-[-0.04em] md:text-5xl">Hamza Kargin</h1>
+            <p class="mt-1 text-muted-foreground">{t("about.role")}</p>
+          </div>
+          <div class="flex items-center gap-1">
+            {
+              socials.map((social) => (
+                <a
+                  href={social.href}
+                  aria-label={social.name}
+                  class={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+                >
+                  <BrandIcon name={social.name} class="size-4" />
+                </a>
+              ))
+            }
+            <a
+              href={`mailto:${site.email}`}
+              aria-label="Email"
+              class={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+            >
+              <Mail />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 border-y border-border py-4 text-sm text-muted-foreground">
+        <li class="flex items-center gap-2">
+          <MapPin className="size-4" />
+          {t("about.location")}
+        </li>
+        <li class="flex items-center gap-2">
+          <Clock className="size-4" />
+          <span
+            data-local-time
+            data-time-zone={site.timeZone}
+            data-locale={intlLocales[locale]}
+            data-same={t("time.same")}
+            data-ahead={t("time.ahead")}
+            data-behind={t("time.behind")}
+            class="tabular-nums"
+          >
+            UTC+3
+          </span>
+        </li>
+      </ul>
+
+      <section class="flex flex-col gap-4">
+        <h2 lang="tr" class="font-[Caveat] text-4xl font-semibold">{t("about.greeting")}</h2>
+        <ul class="flex flex-col gap-3 text-pretty [&>li]:flex [&>li]:gap-3">
+          <li>
+            <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/50"></span>
+            <span>
+              {t("about.intro")}
+            </span>
+          </li>
+          <li>
+            <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/50"></span>
+            <span>
+              {t("about.nowBefore")}{" "}
+              <a href="https://trastfer.ru" class="underline underline-offset-4">Trastfer</a>{t("about.nowAfter")}
+            </span>
+          </li>
+          <li>
+            <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/50"></span>
+            <span>
+              {t("about.personal")}
+            </span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </Section>
+</Layout>
+
+<script>
+  const target = document.querySelector<HTMLElement>("[data-local-time]");
+  const timeZone = target?.dataset.timeZone;
+  const locale = target?.dataset.locale;
+
+  function render() {
+    if (!target || !timeZone) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", timeZone });
+    const there = new Date(now.toLocaleString("en-US", { timeZone }));
+    const here = new Date(now.toLocaleString("en-US"));
+    const diff = Math.round((there.getTime() - here.getTime()) / 3_600_000);
+    const template = diff === 0 ? target.dataset.same : diff > 0 ? target.dataset.ahead : target.dataset.behind;
+    const relation = (template ?? "").replace("{n}", String(Math.abs(diff)));
+    target.textContent = `${time} // ${relation}`;
+  }
+
+  render();
+  setInterval(render, 30_000);
+</script>

@@ -1,25 +1,5 @@
 ---
-import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
-import Section from "@/components/layout/Section.astro";
-import Layout from "@/layouts/Layout.astro";
-import PostList from "@/components/blog/PostList.astro";
-import { getPosts } from "@/lib/blog";
-import { getLocale, useTranslations } from "@/i18n/utils";
-
-
-const t = useTranslations(getLocale(Astro));
-const posts = await getPosts();
+import BlogPage from "@/components/pages/BlogPage.astro";
 ---
 
-<Layout title={`${t("blog.title")} · Hamza Kargin`} description={t("blog.description")}>
-  <Section class="flex flex-col items-center gap-3 py-16 text-center md:py-24">
-    <Breadcrumbs items={[{ label: t("blog.title") }]} />
-    <h1 class="text-4xl font-extrabold tracking-[-0.04em] md:text-5xl">{t("blog.title")}</h1>
-    <p class="text-lg text-muted-foreground">{t("blog.description")}</p>
-  </Section>
-  <Section class="flex justify-center py-12 md:py-16">
-    <div class="w-full max-w-3xl">
-      <PostList posts={posts} />
-    </div>
-  </Section>
-</Layout>
+<BlogPage />

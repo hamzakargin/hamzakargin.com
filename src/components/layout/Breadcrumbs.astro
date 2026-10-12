@@ -7,7 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
+import { cleanPath, getLocale, localizePath, useTranslations } from "@/i18n/utils";
 
 interface Props {
   items: { label: string; href?: string }[];
@@ -23,7 +23,7 @@ const structuredData = {
     "@type": "ListItem",
     position: index + 1,
     name: item.label,
-    item: new URL(item.href ?? Astro.url.pathname, Astro.site).href,
+    item: new URL(item.href ?? cleanPath(Astro.url), Astro.site).href,
   })),
 };
 ---

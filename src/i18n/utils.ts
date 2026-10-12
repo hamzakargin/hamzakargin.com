@@ -16,5 +16,17 @@ export function useTranslations(locale: Locale) {
 }
 
 export function localizePath(path: string, locale: Locale) {
-  return locale === defaultLocale ? path : `/${locale}${path}`;
+  if (locale === defaultLocale) return path;
+  if (path === "/") return `/${locale}`;
+  return path.startsWith("/#") ? `/${locale}${path.slice(1)}` : `/${locale}${path}`;
+}
+
+export function stripLocale(pathname: string) {
+  const [, first, ...rest] = pathname.split("/");
+  const prefixed = locales.some((locale) => locale !== defaultLocale && locale === first);
+  return prefixed ? `/${rest.join("/")}` : pathname;
+}
+
+export function cleanPath(url: URL) {
+  return url.pathname.replace(/(\/index)?\.html$/, "") || "/";
 }

@@ -2,6 +2,13 @@ export const locales = ["en", "ru", "tr", "de"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "en";
 
+export const languageNames: Record<Locale, string> = {
+  en: "English",
+  ru: "Русский",
+  tr: "Türkçe",
+  de: "Deutsch",
+};
+
 export const intlLocales: Record<Locale, string> = {
   en: "en-US",
   ru: "ru-RU",
@@ -14,6 +21,7 @@ const en = {
     "JavaScript Software Engineer. I build web applications and the systems behind them.",
   "a11y.skip": "Skip to content",
   "a11y.toggleTheme": "Toggle theme",
+  "a11y.menu": "Menu",
   "nav.work": "Work",
   "nav.about": "About",
   "nav.writing": "Writing",

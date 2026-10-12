@@ -7,6 +7,8 @@ import { defineConfig } from "astro/config";
 
 export default defineConfig({
   site: "https://hamzakargin.com",
+  trailingSlash: "never",
+  build: { format: "file" },
   i18n: {
     defaultLocale: "en",
     locales: ["en", "ru", "tr", "de"],
@@ -31,7 +33,13 @@ export default defineConfig({
       },
     }),
     mdx(),
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: "en",
+        locales: { en: "en", ru: "ru", tr: "tr", de: "de" },
+      },
+      filter: (page) => !/\/(ru|tr|de)\/blog\/.+/.test(new URL(page).pathname),
+    }),
   ],
   vite: {
     plugins: [tailwindcss()],

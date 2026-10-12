@@ -1,0 +1,16 @@
+---
+import PostPage from "@/components/pages/PostPage.astro";
+import { getPosts } from "@/lib/blog";
+import { localizedPaths } from "@/lib/paths";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return localizedPaths().flatMap(({ params }) =>
+    posts.map((post) => ({ params: { ...params, slug: post.id }, props: { post } })),
+  );
+}
+
+const { post } = Astro.props;
+---
+
+<PostPage post={post} />

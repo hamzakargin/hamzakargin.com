@@ -1,0 +1,55 @@
+---
+import { Check, Languages } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { languageNames, locales } from "@/i18n/ui";
+import { cleanPath, getLocale, localizePath, stripLocale, useTranslations } from "@/i18n/utils";
+
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
+const basePath = stripLocale(cleanPath(Astro.url)) || "/";
+---
+
+<details class="group relative" data-dropdown>
+  <summary
+    aria-label={t("language.label")}
+    class={buttonVariants({
+      variant: "ghost",
+      size: "sm",
+      className: "list-none gap-1.5 font-mono text-xs uppercase [&::-webkit-details-marker]:hidden",
+    })}
+  >
+    <Languages className="size-3.5" />
+    {locale}
+  </summary>
+  <ul
+    class="absolute top-full right-0 z-30 mt-2 flex w-40 flex-col rounded-lg border border-border bg-popover p-1 text-sm shadow-lg"
+  >
+    {
+      locales.map((code) => (
+        <li>
+          <a
+            href={localizePath(basePath, code)}
+            hreflang={code}
+            lang={code}
+            aria-current={code === locale ? "true" : undefined}
+            class="flex items-center justify-between rounded-md px-2.5 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground aria-[current]:text-foreground"
+          >
+            {languageNames[code]}
+            {code === locale && <Check className="size-3.5" />}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  for (const dropdown of document.querySelectorAll<HTMLDetailsElement>("[data-dropdown]")) {
+    document.addEventListener("click", (event) => {
+      if (!dropdown.contains(event.target as Node)) dropdown.open = false;
+    });
+    dropdown.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") dropdown.open = false;
+    });
+  }
+</script>

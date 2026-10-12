@@ -1,7 +1,8 @@
 ---
 import Footer from "@/components/layout/Footer.astro";
 import Header from "@/components/layout/Header.astro";
-import { getLocale, useTranslations } from "@/i18n/utils";
+import { defaultLocale, intlLocales, locales } from "@/i18n/ui";
+import { cleanPath, getLocale, localizePath, stripLocale, useTranslations } from "@/i18n/utils";
 import "@/styles/global.css";
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
   description?: string;
   image?: string;
   type?: "website" | "article";
+  canonicalPath?: string;
+  alternates?: boolean;
 }
 
 const locale = getLocale(Astro);
@@ -18,8 +21,21 @@ const {
   description = t("meta.description"),
   image,
   type = "website",
+  canonicalPath,
+  alternates = true,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const pathname = cleanPath(Astro.url);
+const basePath = stripLocale(pathname) || "/";
+const canonical = new URL(canonicalPath ?? pathname, Astro.site);
+const alternateLinks = alternates
+  ? [
+      ...locales.map((code) => ({
+        hreflang: code,
+        href: new URL(localizePath(basePath, code), Astro.site).href,
+      })),
+      { hreflang: "x-default", href: new URL(localizePath(basePath, defaultLocale), Astro.site).href },
+    ]
+  : [];
 const imageUrl = image ? new URL(image, Astro.site).href : undefined;
 ---
 
@@ -33,6 +49,8 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href={canonical} />
+    {alternateLinks.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
+    <meta property="og:locale" content={intlLocales[locale].replace("-", "_")} />
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content="Hamza Kargin" />
     <meta property="og:title" content={title} />

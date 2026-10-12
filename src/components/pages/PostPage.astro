@@ -1,0 +1,95 @@
+---
+import { getImage } from "astro:assets";
+import { type CollectionEntry, render } from "astro:content";
+import { ArrowUp, ChevronDown, TextAlignStart } from "lucide-react";
+import Toc from "@/components/blog/Toc.astro";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
+import Section from "@/components/layout/Section.astro";
+import Table from "@/components/mdx/Table.astro";
+import { buttonVariants } from "@/components/ui/button";
+import TreeView from "@/components/mdx/TreeView.astro";
+import Layout from "@/layouts/Layout.astro";
+import { formatDate } from "@/lib/format";
+import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
+
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
+const { Content, headings } = await render(post);
+const ogImage = post.data.cover
+  ? (await getImage({ src: post.data.cover, width: 1200, format: "png" })).src
+  : undefined;
+const minutes = Math.max(1, Math.round((post.body ?? "").split(/\s+/).length / 220));
+---
+
+<Layout
+  title={`${post.data.title} · Hamza Kargin`}
+  description={post.data.summary}
+  image={ogImage}
+  type="article"
+  canonicalPath={`/blog/${post.id}`}
+  alternates={false}
+>
+  <div
+    aria-hidden="true"
+    data-reading-bar
+    class="fixed inset-x-0 top-14 z-20 h-0.5 origin-left scale-x-0 bg-foreground"
+  >
+  </div>
+  <Section class="py-12 md:py-20">
+    <div class="mx-auto max-w-2xl">
+      <article data-article lang="en" class="flex min-w-0 flex-col gap-10">
+        <header class="flex flex-col gap-5">
+          <Breadcrumbs
+            items={[{ label: t("blog.title"), href: localizePath("/blog", locale) }, { label: post.data.title }]}
+          />
+          <h1 class="text-4xl font-extrabold tracking-[-0.04em] text-balance md:text-5xl">
+            {post.data.title}
+          </h1>
+          <p class="text-lg text-pretty text-muted-foreground">{post.data.summary}</p>
+          <p class="flex items-center gap-2 text-sm text-muted-foreground">
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
+            <span aria-hidden="true" class="h-3 w-px bg-border"></span>
+            <span>{t("blog.minRead", { n: minutes })}</span>
+          </p>
+        </header>
+        <details class="group rounded-lg border border-border bg-muted/30 xl:hidden">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium">
+            <span class="flex items-center gap-2.5">
+              <TextAlignStart className="size-4 text-muted-foreground" />
+              {t("blog.onThisPage")}
+            </span>
+            <ChevronDown className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
+          </summary>
+          <div class="px-4 pb-3">
+            <Toc headings={headings} variant="inline" />
+          </div>
+        </details>
+        <div
+          class="prose max-w-none prose-neutral dark:prose-invert prose-headings:scroll-mt-24 prose-headings:tracking-tight prose-a:underline-offset-4 prose-code:before:content-none prose-code:after:content-none"
+        >
+          <Content components={{ Table, TreeView }} />
+        </div>
+      </article>
+    </div>
+  </Section>
+  <Toc headings={headings} />
+  <button
+    type="button"
+    data-back-to-top
+    aria-label={t("blog.backToTop")}
+    class={buttonVariants({
+      variant: "outline",
+      size: "icon-sm",
+      className:
+        "pointer-events-none fixed right-4 bottom-4 z-20 bg-background md:right-6 md:bottom-6 opacity-0 shadow-sm transition-opacity data-visible:pointer-events-auto data-visible:opacity-100",
+    })}
+  >
+    <ArrowUp />
+  </button>
+</Layout>
