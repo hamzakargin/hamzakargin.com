@@ -79,8 +79,8 @@ const socials = [
             data-time-zone={site.timeZone}
             data-locale={intlLocales[locale]}
             data-same={t("time.same")}
-            data-ahead={t("time.ahead")}
-            data-behind={t("time.behind")}
+            data-ahead={t("time.ahead", { n: "{n}" })}
+            data-behind={t("time.behind", { n: "{n}" })}
             class="tabular-nums"
           >
             UTC+3
@@ -89,7 +89,7 @@ const socials = [
       </ul>
 
       <section class="flex flex-col gap-4">
-        <h2 lang="tr" class="font-[Caveat] text-4xl font-semibold">{t("about.greeting")}</h2>
+        <h2 class="font-[Caveat] text-4xl font-semibold">{t("about.greeting")}</h2>
         <ul class="flex flex-col gap-3 text-pretty [&>li]:flex [&>li]:gap-3">
           <li>
             <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/50"></span>

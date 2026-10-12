@@ -80,7 +80,7 @@ const en = {
   "about.description": "Who I am and what I’m working on.",
   "about.role": "JavaScript Software Engineer",
   "about.location": "Antalya, Turkey",
-  "about.greeting": "Merhaba!",
+  "about.greeting": "Hey there!",
   "about.intro":
     "I’m Hamza Kargin — a JavaScript Software Engineer who builds web applications end to end, from the database to the server they run on.",
   "about.nowBefore": "Currently running",
@@ -161,7 +161,7 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "about.description": "Кто я и над чем работаю.",
     "about.role": "JavaScript Software Engineer",
     "about.location": "Анталья, Турция",
-    "about.greeting": "Merhaba!",
+    "about.greeting": "Привет!",
     "about.intro":
       "Я Хамза Каргин — JavaScript Software Engineer. Создаю веб-приложения целиком: от базы данных до сервера, на котором они работают.",
     "about.nowBefore": "Сейчас поддерживаю в продакшене",
@@ -237,7 +237,7 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "about.description": "Kimim ve neler üzerinde çalışıyorum.",
     "about.role": "JavaScript Software Engineer",
     "about.location": "Antalya, Türkiye",
-    "about.greeting": "Merhaba!",
+    "about.greeting": "Selam!",
     "about.intro":
       "Ben Hamza Kargin, JavaScript Software Engineer'ım. Web uygulamalarını uçtan uca geliştiriyorum: veritabanından üzerinde çalıştıkları sunucuya kadar.",
     "about.nowBefore": "Şu anda",
@@ -314,7 +314,7 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "about.description": "Wer ich bin und woran ich arbeite.",
     "about.role": "JavaScript Software Engineer",
     "about.location": "Antalya, Türkei",
-    "about.greeting": "Merhaba!",
+    "about.greeting": "Hallo!",
     "about.intro":
       "Ich bin Hamza Kargin, JavaScript Software Engineer. Ich entwickle Webanwendungen von Anfang bis Ende: von der Datenbank bis zum Server, auf dem sie laufen.",
     "about.nowBefore": "Aktuell betreibe ich",
