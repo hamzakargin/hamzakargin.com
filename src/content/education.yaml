@@ -1,6 +1,18 @@
 - id: trakya
-  school: Trakya University
-  degree: Associate of Science
-  field: Web Design and Development
+  school:
+    en: Trakya University
+    ru: Университет Тракья
+    tr: Trakya Üniversitesi
+    de: Trakya-Universität
+  degree:
+    en: Associate of Science
+    ru: Associate of Science
+    tr: Ön lisans
+    de: Associate of Science
+  field:
+    en: Web Design and Development
+    ru: Веб-дизайн и разработка
+    tr: Web Tasarımı ve Kodlama
+    de: Webdesign und -entwicklung
   start: 2024-09-01
   end: 2026-06-30

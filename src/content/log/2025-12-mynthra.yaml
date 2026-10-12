@@ -2,4 +2,7 @@ date: 2025-12-04
 label: ship
 title:
   en: Published Mynthra, a VS Code theme, on the Marketplace
+  ru: "Опубликовал в Marketplace тему для VS Code — Mynthra"
+  tr: "VS Code teması Mynthra'yı Marketplace'te yayınladım"
+  de: "Mynthra, ein VS-Code-Theme, im Marketplace veröffentlicht"
 link: https://marketplace.visualstudio.com/items?itemName=Mynthra.mynthra-theme

@@ -2,4 +2,7 @@ date: 2025-06-24
 label: ship
 title:
   en: Launched StoreWare, a full-stack e-commerce platform
+  ru: "Запустил StoreWare — full-stack платформу для онлайн-торговли"
+  tr: "Full-stack e-ticaret platformu StoreWare'i yayına aldım"
+  de: "StoreWare veröffentlicht, eine Full-Stack-E-Commerce-Plattform"
 link: https://storeware.vercel.app/

@@ -2,4 +2,7 @@ date: 2026-02-04
 label: ship
 title:
   en: Built Bramble, a full-stack real-time messaging app
+  ru: "Создал Bramble — full-stack мессенджер в реальном времени"
+  tr: "Full-stack, gerçek zamanlı mesajlaşma uygulaması Bramble'ı geliştirdim"
+  de: "Bramble gebaut, eine Full-Stack-Messaging-App in Echtzeit"
 link: https://github.com/hamzakargin/bramble

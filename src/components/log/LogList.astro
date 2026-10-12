@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { ArrowUpRight } from "lucide-react";
 import { badgeVariants } from "@/components/ui/badge";
-import { getLocale } from "@/i18n/utils";
+import { getLocale, pick } from "@/i18n/utils";
 import { formatMonth } from "@/lib/format";
 
 interface Props {
@@ -46,7 +46,7 @@ const locale = getLocale(Astro);
                 data.link && "underline-offset-4 group-hover:underline",
               ]}
             >
-              {data.title[locale] ?? data.title.en}
+              {pick(data.title, locale)}
             </span>
             {data.link && (
               <ArrowUpRight className="hidden size-4 text-muted-foreground motion-safe:transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5 group-hover:text-foreground sm:block" />

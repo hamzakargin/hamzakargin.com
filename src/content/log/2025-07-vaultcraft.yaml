@@ -2,4 +2,7 @@ date: 2025-07-29
 label: ship
 title:
   en: Built VaultCraft, an authentication service from scratch
+  ru: "Написал с нуля VaultCraft — сервис аутентификации"
+  tr: "Sıfırdan bir kimlik doğrulama servisi olan VaultCraft'ı geliştirdim"
+  de: "VaultCraft gebaut, einen Authentifizierungsdienst von Grund auf"
 link: https://github.com/hamzakargin/vaultcraft

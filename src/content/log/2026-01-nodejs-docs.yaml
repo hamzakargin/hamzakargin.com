@@ -2,4 +2,7 @@ date: 2026-01-24
 label: oss
 title:
   en: Got a documentation change merged into Node.js core
+  ru: "Мою правку в документации приняли в ядро Node.js"
+  tr: "Node.js çekirdeğine bir dokümantasyon değişikliğim birleştirildi"
+  de: "Dokumentationsänderung in den Node.js-Core aufgenommen"
 link: https://github.com/nodejs/node/pull/60253

@@ -30,3 +30,7 @@ export function stripLocale(pathname: string) {
 export function cleanPath(url: URL) {
   return url.pathname.replace(/(\/index)?\.html$/, "") || "/";
 }
+
+export function pick(value: { en: string } & Partial<Record<Locale, string>>, locale: Locale) {
+  return value[locale] ?? value.en;
+}

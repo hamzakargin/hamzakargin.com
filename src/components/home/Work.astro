@@ -1,5 +1,5 @@
 ---
-import { getLocale, useTranslations } from "@/i18n/utils";
+import { getLocale, pick, useTranslations } from "@/i18n/utils";
 import { ArrowUpRight } from "lucide-react";
 import Section from "@/components/layout/Section.astro";
 import SectionHeading from "@/components/layout/SectionHeading.astro";
@@ -24,7 +24,7 @@ const t = useTranslations(locale);
               <Card size="sm" className="h-full transition-shadow group-hover:shadow-lg">
                 <CardHeader>
                   <CardTitle>{project.name}</CardTitle>
-                  <CardDescription>{project.description}</CardDescription>
+                  <CardDescription>{pick(project.description, locale)}</CardDescription>
                 </CardHeader>
                 <CardFooter className="mt-auto justify-between text-muted-foreground">
                   <span class="text-xs tabular-nums">{project.dateCreated.getUTCFullYear()}</span>

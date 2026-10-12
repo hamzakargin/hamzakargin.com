@@ -2,4 +2,7 @@ date: 2026-01-04
 label: ship
 title:
   en: Launched FlowDeck, a retail admin panel
+  ru: "Запустил FlowDeck — админ-панель для ритейла"
+  tr: "Perakende yönetim paneli FlowDeck'i yayına aldım"
+  de: "FlowDeck veröffentlicht, ein Admin-Panel für den Einzelhandel"
 link: https://flowdeck-bay.vercel.app

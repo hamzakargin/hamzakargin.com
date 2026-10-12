@@ -1,5 +1,5 @@
 ---
-import { getLocale, useTranslations } from "@/i18n/utils";
+import { getLocale, pick, useTranslations } from "@/i18n/utils";
 import { getCollection } from "astro:content";
 import { GraduationCap } from "lucide-react";
 import Section from "@/components/layout/Section.astro";
@@ -22,8 +22,8 @@ const t = useTranslations(locale);
         <li class="py-5">
           <TimelineItem
             icon={GraduationCap}
-            title={data.school}
-            meta={[formatRange(data.start, data.end), data.degree, data.field]}
+            title={pick(data.school, locale)}
+            meta={[formatRange(data.start, data.end), pick(data.degree, locale), pick(data.field, locale)]}
             skills={data.skills}
           />
         </li>

@@ -1,5 +1,5 @@
 ---
-import { getLocale, useTranslations } from "@/i18n/utils";
+import { getLocale, pick, useTranslations } from "@/i18n/utils";
 import { getCollection } from "astro:content";
 import { Building2 } from "lucide-react";
 import Section from "@/components/layout/Section.astro";
@@ -31,13 +31,17 @@ const t = useTranslations(locale);
               {data.company}
             </p>
             <p class="text-sm text-muted-foreground">
-              {data.location} ({data.mode})
+              {pick(data.location, locale)} ({pick(data.mode, locale)})
             </p>
           </div>
           <TimelineItem
             title={data.role}
-            meta={[data.type, formatRange(data.start, data.end), formatDuration(data.start, data.end)]}
-            highlights={data.highlights}
+            meta={[
+              pick(data.type, locale),
+              formatRange(data.start, data.end),
+              formatDuration(data.start, data.end, locale),
+            ]}
+            highlights={data.highlights.map((item) => pick(item, locale))}
             skills={data.skills}
           />
         </li>
