@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, Check, Copy, Mail } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
 import BrandIcon from "@/components/layout/BrandIcon.astro";
 import Section from "@/components/layout/Section.astro";
 import SectionHeading from "@/components/layout/SectionHeading.astro";
@@ -32,6 +32,9 @@ import { site } from "@/lib/site";
       <Check className="hidden group-data-copied:block" />
     </button>
   </div>
+  <p class="flex items-center gap-1.5 text-sm text-muted-foreground">
+    <MapPin className="size-3.5" /> Antalya, Turkey · UTC+3
+  </p>
   <div class="flex flex-wrap justify-center gap-3">
     <a class={buttonVariants()} href={`mailto:${site.email}`}>
       <Mail data-icon="inline-start" /> Send an email
