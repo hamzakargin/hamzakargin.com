@@ -27,4 +27,19 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { blog, projects };
+const log = defineCollection({
+  loader: glob({ pattern: "**/*.{yaml,yml}", base: "./src/content/log" }),
+  schema: z.object({
+    date: z.coerce.date(),
+    label: z.enum(["ship", "oss"]),
+    title: z.object({
+      en: z.string(),
+      ru: z.string().optional(),
+      tr: z.string().optional(),
+      de: z.string().optional(),
+    }),
+    link: z.url().optional(),
+  }),
+});
+
+export const collections = { blog, projects, log };
