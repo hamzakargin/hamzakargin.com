@@ -32,6 +32,8 @@ import {
   siTypescript,
   siVercel,
   siVite,
+  siX,
+  siYoutube,
   siWebpack,
 } from "simple-icons";
 
@@ -97,6 +99,8 @@ const icons: Record<string, { path: string; fillRule?: "evenodd" }> = {
   Vercel: siVercel,
   Vite: siVite,
   Webpack: siWebpack,
+  X: siX,
+  YouTube: siYoutube,
 };
 
 export function getIcon(name?: string) {
