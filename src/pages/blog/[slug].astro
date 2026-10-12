@@ -1,4 +1,5 @@
 ---
+import { getImage } from "astro:assets";
 import { render } from "astro:content";
 import { ArrowUp, ChevronDown, TextAlignStart } from "lucide-react";
 import Toc from "@/components/blog/Toc.astro";
@@ -18,10 +19,18 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
+const ogImage = post.data.cover
+  ? (await getImage({ src: post.data.cover, width: 1200, format: "png" })).src
+  : undefined;
 const minutes = Math.max(1, Math.round((post.body ?? "").split(/\s+/).length / 220));
 ---
 
-<Layout title={`${post.data.title} · Hamza Kargin`} description={post.data.summary}>
+<Layout
+  title={`${post.data.title} · Hamza Kargin`}
+  description={post.data.summary}
+  image={ogImage}
+  type="article"
+>
   <div
     aria-hidden="true"
     data-reading-bar
