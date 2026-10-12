@@ -1,7 +1,8 @@
 ---
 import { ArrowUpRight } from "lucide-react";
+import { site } from "@/lib/site";
 import Section from "@/components/layout/Section.astro";
-import { Badge } from "@/components/ui/badge";
+import { badgeVariants } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 ---
 
@@ -11,10 +12,10 @@ import { buttonVariants } from "@/components/ui/button";
     class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(ellipse_at_top,var(--color-muted),transparent_70%)]"
   >
   </div>
-  <Badge variant="outline">
+  <a href="#contact" class={badgeVariants({ variant: "outline" })}>
     <span class="size-1.5 rounded-full bg-emerald-500"></span>
     Open to work
-  </Badge>
+  </a>
   <h1 class="text-5xl font-extrabold tracking-[-0.06em] text-balance md:text-7xl">Hamza Kargin</h1>
   <p class="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
     <span class="font-medium text-foreground">JavaScript Software Engineer</span> based in Antalya,
@@ -22,10 +23,11 @@ import { buttonVariants } from "@/components/ui/button";
     behind them.
   </p>
   <div class="flex gap-3 pt-2">
-    <a class={buttonVariants()} href="https://github.com/hamzakargin">
+    <a class={buttonVariants()} href="#contact">Get in touch</a>
+    <a class={buttonVariants({ variant: "outline" })} href={site.github}>
       GitHub <ArrowUpRight data-icon="inline-end" />
     </a>
-    <a class={buttonVariants({ variant: "outline" })} href="https://www.linkedin.com/in/hamzakargin">
+    <a class={buttonVariants({ variant: "outline" })} href={site.linkedin}>
       LinkedIn <ArrowUpRight data-icon="inline-end" />
     </a>
   </div>

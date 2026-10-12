@@ -3,6 +3,8 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --ignore-scripts
 COPY . .
+ARG COMMIT_SHA
+ENV COMMIT_SHA=$COMMIT_SHA
 RUN bun run build
 
 FROM nginx:stable-alpine AS runtime

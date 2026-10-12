@@ -1,0 +1,62 @@
+---
+import { ArrowUpRight, Check, Copy, Mail } from "lucide-react";
+import BrandIcon from "@/components/layout/BrandIcon.astro";
+import Section from "@/components/layout/Section.astro";
+import SectionHeading from "@/components/layout/SectionHeading.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { site } from "@/lib/site";
+---
+
+<Section id="contact" class="flex flex-col items-center gap-8 py-20 text-center md:py-28">
+  <SectionHeading title="Contact" />
+  <div class="flex max-w-xl flex-col gap-3">
+    <p class="text-xl text-balance md:text-2xl">Open to remote, hybrid or on-site roles.</p>
+    <p class="text-pretty text-muted-foreground">
+      Have a role, a project or a question? Email is the fastest way to reach me.
+    </p>
+  </div>
+  <div class="flex items-center gap-1 rounded-full border border-border bg-muted/40 p-1 pl-4">
+    <a
+      href={`mailto:${site.email}`}
+      class="font-mono text-sm underline-offset-4 hover:underline md:text-base"
+    >
+      {site.email}
+    </a>
+    <button
+      type="button"
+      data-copy={site.email}
+      aria-label="Copy email address"
+      class={buttonVariants({ variant: "ghost", size: "icon-sm", className: "group rounded-full" })}
+    >
+      <Copy className="group-data-copied:hidden" />
+      <Check className="hidden group-data-copied:block" />
+    </button>
+  </div>
+  <div class="flex flex-wrap justify-center gap-3">
+    <a class={buttonVariants()} href={`mailto:${site.email}`}>
+      <Mail data-icon="inline-start" /> Send an email
+    </a>
+    <a class={buttonVariants({ variant: "outline" })} href={site.linkedin}>
+      <BrandIcon name="LinkedIn" class="size-4" /> LinkedIn <ArrowUpRight data-icon="inline-end" />
+    </a>
+    <a class={buttonVariants({ variant: "outline" })} href={site.github}>
+      <BrandIcon name="GitHub" class="size-4" /> GitHub <ArrowUpRight data-icon="inline-end" />
+    </a>
+  </div>
+</Section>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy]")) {
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? "");
+        button.setAttribute("data-copied", "");
+        button.setAttribute("aria-label", "Copied");
+        setTimeout(() => {
+          button.removeAttribute("data-copied");
+          button.setAttribute("aria-label", "Copy email address");
+        }, 1500);
+      } catch {}
+    });
+  }
+</script>

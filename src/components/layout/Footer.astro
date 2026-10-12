@@ -1,0 +1,73 @@
+---
+import { Mail } from "lucide-react";
+import BrandIcon from "@/components/layout/BrandIcon.astro";
+import { build } from "@/lib/build";
+import { formatDate } from "@/lib/format";
+import { site } from "@/lib/site";
+
+const links = [
+  { href: "/#work", label: "Work" },
+  { href: "/blog", label: "Writing" },
+  { href: "/log", label: "Ship log" },
+  { href: "/#contact", label: "Contact" },
+];
+---
+
+<footer class="px-4 md:px-6">
+  <div class="mx-auto max-w-5xl border-x border-border text-sm">
+    <dl class="grid grid-cols-2 md:grid-cols-4 [&>div]:border-b [&>div]:border-border [&>div]:px-6 [&>div]:py-4 md:[&>div]:px-10">
+      <div class="border-r border-border">
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Deployed on</dt>
+        <dd class="mt-1.5">Own VPS · Docker</dd>
+      </div>
+      <div class="md:border-r md:border-border">
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Source code</dt>
+        <dd class="mt-1.5 text-muted-foreground">Open soon</dd>
+      </div>
+      <div class="border-r border-border">
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">License</dt>
+        <dd class="mt-1.5">MIT</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Typeface</dt>
+        <dd class="mt-1.5">Geist</dd>
+      </div>
+      <div class="col-span-2 md:border-r md:border-border">
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Built with</dt>
+        <dd class="mt-1.5 flex flex-col gap-0.5 font-mono text-[13px]">
+          {build.stack.map((item) => <span>{item}</span>)}
+        </dd>
+      </div>
+      <div class="col-span-2">
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Last deployed</dt>
+        <dd class="mt-1.5 flex flex-col gap-0.5">
+          <time datetime={build.date.toISOString()}>{formatDate(build.date)}</time>
+          {build.commit && <span class="font-mono text-[13px] text-muted-foreground">{build.commit}</span>}
+        </dd>
+      </div>
+    </dl>
+    <div class="flex flex-col gap-4 px-6 py-6 text-muted-foreground md:flex-row md:items-center md:justify-between md:px-10">
+      <p>© {build.date.getFullYear()} {site.name}</p>
+      <nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2">
+        {
+          links.map(({ href, label }) => (
+            <a href={href} class="transition-colors hover:text-foreground">
+              {label}
+            </a>
+          ))
+        }
+      </nav>
+      <div class="flex items-center gap-4">
+        <a href={site.github} aria-label="GitHub" class="transition-colors hover:text-foreground">
+          <BrandIcon name="GitHub" class="size-4" />
+        </a>
+        <a href={site.linkedin} aria-label="LinkedIn" class="transition-colors hover:text-foreground">
+          <BrandIcon name="LinkedIn" class="size-4" />
+        </a>
+        <a href={`mailto:${site.email}`} aria-label="Email" class="transition-colors hover:text-foreground">
+          <Mail className="size-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
