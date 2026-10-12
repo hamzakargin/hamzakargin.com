@@ -26,8 +26,7 @@ const t = useTranslations(locale);
     {t("hero.leadAfter")}
   </p>
   <div class="flex gap-3 pt-2">
-    <a class={buttonVariants()} href={localizePath("/#contact", locale)}>{t("hero.cta")}</a>
-    <a class={buttonVariants({ variant: "outline" })} href={site.github}>
+    <a class={buttonVariants()} href={site.github}>
       GitHub <ArrowUpRight data-icon="inline-end" />
     </a>
     <a class={buttonVariants({ variant: "outline" })} href={site.linkedin}>
