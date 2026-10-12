@@ -1,0 +1,32 @@
+---
+import { ArrowUpRight, MapPin } from "lucide-react";
+import { badgeVariants } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<section class="flex flex-col items-start gap-6 py-24 md:py-32">
+  <span class={badgeVariants({ variant: "outline" })}>
+    <span class="size-1.5 rounded-full bg-emerald-500"></span>
+    Open to work
+  </span>
+  <div class="flex flex-col gap-3">
+    <h1 class="text-4xl font-semibold tracking-tight md:text-6xl">Hamza Kargin</h1>
+    <p class="text-xl text-muted-foreground md:text-2xl">JavaScript Software Engineer</p>
+  </div>
+  <p class="max-w-xl text-lg text-pretty">I build web applications and the systems behind them.</p>
+  <div class="flex flex-col gap-1 text-sm text-muted-foreground">
+    <p class="flex items-center gap-1.5">
+      <MapPin className="size-3.5" />
+      Antalya, Turkey · UTC+3
+    </p>
+    <p>Working mostly with TypeScript, React, Node.js and PostgreSQL</p>
+  </div>
+  <div class="flex gap-3 pt-2">
+    <a class={buttonVariants()} href="https://github.com/hamzakargin">
+      GitHub <ArrowUpRight />
+    </a>
+    <a class={buttonVariants({ variant: "outline" })} href="https://www.linkedin.com/in/hamzakargin">
+      LinkedIn <ArrowUpRight />
+    </a>
+  </div>
+</section>
