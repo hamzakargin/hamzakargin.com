@@ -1,0 +1,373 @@
+---
+title: Managing Server State
+date: "2026-01-21T00:00:00Z"
+modifiedTime: "2026-01-22T12:00:00Z"
+summary: Learn how to properly manage server state in React using TanStack React Query.
+---
+
+## Preface
+
+One of the most misunderstood topics in React is **state management**.
+
+Most problems start with a simple confusion:
+
+> “Is this client state or server state?”
+
+TanStack React Query exists to make that distinction **clear and intentional**.
+
+In this article, we’ll look at React Query from a practical and mental-model perspective:
+
+- Why it exists
+- What problems it solves
+- How to think about server state
+- How it’s used in real applications
+
+No magic, no hype — just a clean and scalable approach.
+
+## What Is Server State?
+
+Before touching any code, we need a clear definition.
+
+### Client State
+
+- UI state
+- Modal open/close
+- Theme (dark/light)
+- Form inputs
+- Tabs, dropdowns, toggles
+
+### Server State
+
+- Data fetched from an API
+- Data shared across components
+- Data that can become stale
+- Data that needs revalidation
+
+Server state is:
+
+- Asynchronous
+- Shared
+- Potentially outdated
+- Hard to keep in sync
+
+TanStack React Query is built specifically to handle **this kind of state**.
+
+## Why TanStack React Query Exists
+
+React Query does **not** try to replace state management libraries.
+
+It doesn’t say:
+
+> “Let me manage all your state.”
+
+Instead, it says:
+
+> “Don’t manually manage server state — I’ll do it for you.”
+
+Out of the box, it handles:
+
+- Loading states
+- Error states
+- Caching
+- Background refetching
+- Deduplication
+- Retry logic
+- Pagination and infinite queries
+
+All without reducers, effects, or boilerplate.
+
+## Installing React Query
+
+```bash title='Terminal'
+pnpm add @tanstack/react-query
+```
+
+### Setting Up the Query Client
+
+Every React Query setup starts here.
+
+```ts title='Typescript'
+'use client'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
+export function Providers({ children }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+    </QueryClientProvider>
+  )
+}
+```
+
+Then wrap your app at the root:
+
+```ts title='Typescript'
+import { Providers } from './providers'
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+At this point, React Query is globally available.
+
+**Your First Query**
+A basic fetch function:
+
+```ts title='Typescript'
+const fetchUsers = async () => {
+  const res = await fetch("/api/users");
+  return res.json();
+};
+```
+
+Using it inside a component:
+
+```tsx title='tsx'
+import { useQuery } from "@tanstack/react-query";
+
+export function Users() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Something went wrong</p>;
+
+  return (
+    <ul>
+      {data.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+Notice what’s missing:
+
+- No `useEffect`
+- No `useState`
+- No manual loading flags
+
+React Query owns the entire lifecycle.
+
+#### Query Keys: The Core Concept
+
+`queryKey` is the heart of React Query.
+
+```ts title='Typescript'
+queryKey: ["users"];
+```
+
+queryKey: ['users']
+
+- A query key acts as:
+
+- A cache identifier
+
+- A dependency system
+
+- A refetch trigger
+
+With parameters:
+
+```ts title='Typescript'
+queryKey: ["user", userId];
+```
+
+This gives you:
+
+- Isolated cache per user
+
+- Automatic invalidation
+
+- Correct refetch behavior
+
+Designing good query keys is one of the most important skills in React Query.
+
+#### Caching and Stale Time
+
+By default:
+
+- Data is cached
+
+- Data is considered stale immediately
+
+You can tune this behavior:
+
+```ts title='Typescript'
+useQuery({
+  queryKey: ["users"],
+  queryFn: fetchUsers,
+  staleTime: 1000 * 60, // 1 minute
+  cacheTime: 1000 * 60 * 5, // 5 minutes
+});
+```
+
+This tells React Query:
+
+> "This data is fresh — don’t refetch yet."
+
+#### Mutations: Writing Data
+
+Fetching is only half the story.
+Writing data happens through `mutations`.
+
+```ts title='Typescript'
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const createUser = async (data) => {
+  const res = await fetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  return res.json();
+};
+```
+
+Usage:
+
+```tsx title='tsx'
+const queryClient = useQueryClient();
+
+const mutation = useMutation({
+  mutationFn: createUser,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+  },
+});
+```
+
+Key idea:
+
+- Mutations update the server
+
+- Queries stay in sync through invalidation
+
+No manual refetching required.
+
+#### Optimistic Updates
+
+Sometimes you want instant UI feedback.
+
+```ts title='Typescript'
+useMutation({
+mutationFn: createUser,
+onMutate: async (newUser) => {
+await queryClient.cancelQueries({ queryKey: ['users'] })
+
+    const previousUsers =
+      queryClient.getQueryData(['users'])
+
+    queryClient.setQueryData(['users'], (old) => [
+      ...old,
+      newUser
+    ])
+
+    return { previousUsers }
+
+},
+onError: (\_err, \_newUser, context) => {
+queryClient.setQueryData(
+['users'],
+context.previousUsers
+)
+}
+})
+```
+
+This gives you:
+
+- Instant UI updates
+
+- Automatic rollback on error
+
+- Much better user experience
+
+#### Pagination and Infinite Queries
+
+Pagination is a first-class feature.
+
+```ts title='Typescript'
+useInfiniteQuery({
+  queryKey: ["posts"],
+  queryFn: fetchPosts,
+  getNextPageParam: (lastPage) => lastPage.nextCursor,
+});
+```
+
+Scroll-based loading, cursor pagination, and page-by-page fetching are all built in.
+
+**Common Mental Model Mistakes**
+
+Avoid these patterns:
+
+❌ Putting server data into Redux or Zustand
+
+❌ Fetching inside `useEffect`
+
+❌ Manually syncing API responses
+
+Preferred approach:
+
+✅ Server state → React Query
+
+✅ Client/UI state → useState / Zustand
+
+✅ Cache & sync → React Query
+
+Clear boundaries lead to clean architecture.
+
+#### When NOT to Use React Query
+
+React Query is not for everything.
+
+Avoid it for:
+
+- Form input state
+
+- UI toggles
+
+- Modals
+
+- Theme preferences
+
+It is designed **only** for server state.
+
+### Conclusion
+
+TanStack React Query is more than a library — it’s a **mental model.**
+
+Once you understand the difference between client state and server state:
+
+- Your code becomes simpler
+
+- Bugs decrease
+
+- Architecture improves
+
+React Query teaches one powerful idea:
+
+> “Server state is not your state.”
+
+And once that clicks, everything else follows.
+
+Useful Links
+
+- [TanStack React Query Docs](https://tanstack.com/query/v4/docs/react)
+
+- [Server State Overview](https://tanstack.com/query/v4/docs/react/guides/server-state)
+
+- [Optimistic Updates](https://tanstack.com/query/v4/docs/react/guides/optimistic-updates)

@@ -1,0 +1,113 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+  variant?: "minimap" | "inline";
+}
+
+const { headings, variant = "minimap" } = Astro.props;
+const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+{
+  items.length > 0 && variant === "minimap" && (
+    <nav
+      aria-label="On this page"
+      class="group fixed top-1/2 right-6 z-20 hidden -translate-y-1/2 xl:block"
+    >
+      <ul aria-hidden="true" class="flex flex-col items-end gap-2.5 py-2">
+        {items.map((heading) => (
+          <li
+            data-toc-link={heading.slug}
+            class:list={[
+              "h-0.5 rounded-full bg-muted-foreground/35 transition-all duration-200 data-active:bg-foreground",
+              heading.depth === 3 ? "w-2.5 data-active:w-3.5" : "w-4 data-active:w-6",
+            ]}
+          />
+        ))}
+      </ul>
+      <div class="pointer-events-none absolute top-1/2 right-0 w-64 -translate-y-1/2 translate-x-2 opacity-0 transition-[opacity,translate] duration-200 group-focus-within:pointer-events-auto group-focus-within:translate-x-0 group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100">
+        <ul class="flex max-h-[70vh] flex-col overflow-y-auto rounded-xl border border-border bg-popover p-2 text-sm shadow-lg">
+          {items.map((heading) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                data-toc-link={heading.slug}
+                class:list={[
+                  "block rounded-md py-1.5 pr-2 text-pretty text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-active:text-foreground",
+                  heading.depth === 3 ? "pl-6" : "pl-2.5",
+                ]}
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  )
+}
+{
+  items.length > 0 && variant === "inline" && (
+    <nav aria-label="On this page" class="text-sm">
+      <ul class="flex flex-col">
+        {items.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              data-toc-link={heading.slug}
+              class:list={[
+                "block py-1 text-muted-foreground transition-colors hover:text-foreground data-active:text-foreground",
+                heading.depth === 3 && "pl-4",
+              ]}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<script>
+  const article = document.querySelector<HTMLElement>("[data-article]");
+  const targets = [...document.querySelectorAll<HTMLElement>("[data-toc-link]")];
+  const ids = [...new Set(targets.map((target) => target.dataset.tocLink ?? ""))];
+  const headings = ids
+    .map((id) => document.getElementById(id))
+    .filter((heading): heading is HTMLElement => heading !== null);
+  const bar = document.querySelector<HTMLElement>("[data-reading-bar]");
+  const backToTop = document.querySelector<HTMLElement>("[data-back-to-top]");
+  const offset = 96;
+  let frame = 0;
+
+  function update() {
+    frame = 0;
+    const passed = headings.filter((heading) => heading.getBoundingClientRect().top <= offset);
+    const active = passed.at(-1) ?? headings[0];
+    for (const target of targets) {
+      target.toggleAttribute("data-active", target.dataset.tocLink === active?.id);
+    }
+    if (article && bar) {
+      const start = article.getBoundingClientRect().top + window.scrollY;
+      const end = start + article.offsetHeight - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, (window.scrollY - start) / Math.max(1, end - start)));
+      bar.style.transform = `scaleX(${progress})`;
+    }
+    backToTop?.toggleAttribute("data-visible", window.scrollY > 600);
+  }
+
+  function schedule() {
+    if (!frame) frame = requestAnimationFrame(update);
+  }
+
+  backToTop?.addEventListener("click", () => {
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+  });
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  update();
+</script>

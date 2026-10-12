@@ -20,3 +20,12 @@ export function formatDuration(start: Date, end = new Date()) {
   const rest = months % 12;
   return [years && `${years}y`, rest && `${rest}m`].filter(Boolean).join(" ");
 }
+
+export function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}

@@ -1,0 +1,13 @@
+---
+import TreeNode, { type Node } from "@/components/mdx/TreeNode.astro";
+
+interface Props {
+  collection: Node;
+}
+
+const { collection } = Astro.props;
+---
+
+<div class="not-prose my-6 rounded-lg border border-border bg-muted/40 p-4 font-mono text-[13px]">
+  <TreeNode nodes={collection.children ?? []} />
+</div>

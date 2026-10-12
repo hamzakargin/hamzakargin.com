@@ -1,0 +1,46 @@
+---
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+
+interface Props {
+  items: { label: string; href?: string }[];
+}
+
+const items = [{ label: "Home", href: "/" }, ...Astro.props.items];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.label,
+    item: new URL(item.href ?? Astro.url.pathname, Astro.site).href,
+  })),
+};
+---
+
+<Breadcrumb>
+  <BreadcrumbList>
+    {
+      items.map((item, index) => (
+        <>
+          {index > 0 && <BreadcrumbSeparator />}
+          <BreadcrumbItem>
+            {item.href ? (
+              <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+            ) : (
+              <BreadcrumbPage className="line-clamp-1">{item.label}</BreadcrumbPage>
+            )}
+          </BreadcrumbItem>
+        </>
+      ))
+    }
+  </BreadcrumbList>
+</Breadcrumb>
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

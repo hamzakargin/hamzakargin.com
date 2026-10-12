@@ -1,0 +1,317 @@
+---
+title: Content Collections
+date: "2025-12-12T00:00:00Z"
+modifiedTime: "2025-12-19T12:00:00Z"
+summary: Build a scalable, type-safe blog using Next.js, MDX, and Zod-powered content collections.
+---
+
+## Preface
+
+Modern blogs are no longer just pages — they are **content collections**.
+
+Instead of hardcoding posts or relying entirely on a CMS, we can treat our blog as a structured content layer powered by **MDX + filesystem + schema validation**.
+
+By adding **Zod**, we get:
+
+- Type-safe front matter
+- Runtime validation
+- Clear content contracts
+- Early error detection during build
+
+This article walks through building a **type-safe content collection blog** with Next.js.
+
+## Packages
+
+The main packages we’ll use:
+
+- [next](https://github.com/vercel/next.js) — React framework
+- [mdx](https://mdxjs.com/) — Markdown with JSX
+- [gray-matter](https://github.com/jonschlinkert/gray-matter) — front matter parser
+- [zod](https://github.com/colinhacks/zod) — schema validation
+- [fs](https://nodejs.org/api/fs.html) — filesystem access
+- [path](https://nodejs.org/api/path.html) — path utilities
+
+## Content Structure
+
+Each blog post lives inside a **content collection** directory.
+
+### Folder structure
+
+- `content/blog/*.mdx` — Blog posts
+- `lib/content.ts` — Content utilities + schemas
+- `lib/format-date.ts` — Date formatting helper
+- `app/blog/[slug]/page.tsx` — Blog post page
+- `app/page.tsx` — Blog index
+
+<TreeView
+  defaultExpandedValue={["content", "content/blog", "lib", "app", "app/blog"]}
+  collection={{
+    id: "ROOT",
+    name: "",
+    children: [
+      {
+        id: "content",
+        name: "content",
+        children: [
+          {
+            id: "content/blog",
+            name: "blog",
+            children: [
+              { id: "content/blog/intro.mdx", name: "intro.mdx" },
+              { id: "content/blog/nextjs.mdx", name: "nextjs.mdx" },
+              { id: "content/blog/mdx.mdx", name: "mdx.mdx" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "lib",
+        name: "lib",
+        children: [
+          { id: "lib/content.ts", name: "content.ts" },
+          { id: "lib/format-date.ts", name: "format-date.ts" },
+        ],
+      },
+      {
+        id: "app",
+        name: "app",
+        children: [
+          { id: "app/page.tsx", name: "page.tsx" },
+          {
+            id: "app/blog",
+            name: "blog",
+            children: [{ id: "app/blog/[slug]", name: "[slug]" }],
+          },
+        ],
+      },
+    ],
+  }}
+/>
+
+## Writing Content (MDX)
+
+Each post is a `.mdx` file with front matter.
+
+````md
+---
+title: Understanding Content Collections
+date: "2025-01-10T00:00:00Z"
+summary: Why content collections scale better than traditional blogs.
+tags: ["nextjs", "content", "mdx"]
+published: true
+---
+
+## What is a Content Collection?
+
+A content collection is a structured group of content files that share the same schema.
+This metadata will be **validated at build time** using Zod.
+
+### Defining a Content Schema (Zod)
+
+This is the key difference from a basic MDX setup.
+
+```ts title='Typescript'
+import { z } from "zod";
+
+export const blogSchema = z.object({
+  title: z.string(),
+  date: z.string().datetime(),
+  summary: z.string(),
+  tags: z.array(z.string()).default([]),
+  published: z.boolean().default(true),
+});
+
+export type BlogFrontMatter = z.infer<typeof blogSchema>;
+```
+````
+
+Now every blog post **must** conform to this schema.
+
+**Reading Content from the Filesystem**
+
+```ts title='Typescript'
+import path from "path";
+import fs from "fs";
+
+export const CONTENT_PATH = path.join(process.cwd(), "content", "blog");
+
+export const getAllSlugs = () =>
+  fs.readdirSync(CONTENT_PATH).filter((file) => file.endsWith(".mdx"));
+
+export const formatSlug = (slug: string) => slug.replace(/\.mdx$/, "");
+```
+
+**Reading and Validating a Single Post**
+
+```ts title='Typescript'
+import matter from "gray-matter";
+
+export const getPostBySlug = (slug: string) => {
+  const filePath = path.join(CONTENT_PATH, `${slug}.mdx`);
+  const source = fs.readFileSync(filePath, "utf-8");
+
+  const { content, data } = matter(source);
+
+  const parsed = blogSchema.safeParse(data);
+
+  if (!parsed.success) {
+    throw new Error(
+      `Invalid front matter in ${slug}.mdx\n${parsed.error.message}`,
+    );
+  }
+
+  return {
+    content,
+    frontMatter: {
+      ...parsed.data,
+      slug,
+    },
+  };
+};
+```
+
+At this point, `invalid content will fail the build` — exactly what we want.
+
+### Collecting All Posts
+
+```ts title='TypeScript'
+export const getAllPosts = () => {
+  return getAllSlugs()
+    .map((slug) => {
+      const source = fs.readFileSync(path.join(CONTENT_PATH, slug), "utf-8");
+
+      const { data } = matter(source);
+      const parsed = blogSchema.safeParse(data);
+
+      if (!parsed.success || !parsed.data.published) {
+        return null;
+      }
+
+      return {
+        ...parsed.data,
+        slug: formatSlug(slug),
+        date: new Date(parsed.data.date).toISOString(),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => (a!.date > b!.date ? -1 : 1));
+};
+```
+
+Now your blog automatically ignores:
+
+- Draft posts
+
+- Invalid front matter
+
+- Broken metadata
+
+**Formatting Dates**
+
+```ts title='TypeScript'
+export const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString("en", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+```
+
+**Blog Index Page**
+
+```ts title='TypeScript'
+import Link from 'next/link'
+import { getAllPosts } from '@/lib/content'
+import { formatDate } from '@/lib/format-date'
+
+export default function Home() {
+const posts = getAllPosts()
+
+return (
+
+<section>
+<h1 className='text-5xl font-bold mb-10'>Blog</h1>
+
+      <ul className='space-y-6'>
+        {posts.map((post) => (
+          <li key={post.slug}>
+            <Link href={`/blog/${post.slug}`}>
+              <h2 className='text-2xl font-semibold'>
+                {post.title}
+              </h2>
+              <time className='text-sm opacity-70'>
+                {formatDate(post.date)}
+              </time>
+              <p className='mt-2'>{post.summary}</p>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+)
+}
+```
+
+**Blog Post Page**
+
+```tsx title='TypeScript'
+import { getPostBySlug, getAllSlugs } from "@/lib/content";
+import { formatDate } from "@/lib/format-date";
+import { MDXRemote } from "next-mdx-remote/rsc";
+
+export default function BlogPost({ params }) {
+  const post = getPostBySlug(params.slug);
+
+  return (
+    <article className="prose max-w-none">
+      <h1>{post.frontMatter.title}</h1>
+      <time>{formatDate(post.frontMatter.date)}</time>
+
+      <MDXRemote source={post.content} />
+    </article>
+  );
+}
+
+export const generateStaticParams = () =>
+  getAllSlugs().map((slug) => ({
+    slug: slug.replace(".mdx", ""),
+  }));
+```
+
+**Why Zod Changes Everything**
+
+-- Content errors fail fast
+
+-- Metadata is self-documented
+
+-- Refactors are safe
+
+-- IDE autocomplete for content fields
+
+-- No more “undefined front matter” bugs
+
+This is essentially a `headless CMS inside your repo`.
+
+### Conclusion
+
+Content collections become truly powerful when paired with schema validation.
+
+With Next.js + MDX + Zod, you get:
+
+- Static performance
+
+- Type safety
+
+- Full control
+
+- Zero external dependencies
+
+- This setup scales from a personal blog to full documentation systems.
+
+### Useful Links
+
+- [Zod](https://zod.dev)
+- [MDX](https://mdxjs.com/)
+- [Next.js App Router](https://nextjs.org/docs/app)
+- [gray-matter](https://github.com/jonschlinkert/gray-matter)

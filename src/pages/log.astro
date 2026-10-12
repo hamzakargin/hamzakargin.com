@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
 import Section from "@/components/layout/Section.astro";
 import LogList from "@/components/log/LogList.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -10,6 +11,7 @@ const years = Map.groupBy(entries, (entry) => entry.data.date.getUTCFullYear());
 
 <Layout title="Ship log · Hamza Kargin" description="A dated record of what I’ve shipped.">
   <Section class="flex flex-col gap-3 py-16 md:py-24">
+    <Breadcrumbs items={[{ label: "Ship log" }]} />
     <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Ship log</h1>
     <p class="text-lg text-muted-foreground">A dated record of what I’ve shipped.</p>
   </Section>

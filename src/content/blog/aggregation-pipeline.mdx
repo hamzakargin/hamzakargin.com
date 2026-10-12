@@ -1,0 +1,207 @@
+---
+title: Aggregation Pipeline
+date: "2025-08-14T00:00:00Z"
+modifiedTime: "2025-09-16T00:00:00Z"
+summary: MongoDB aggregation pipelines demystified—native Node.js, no ORM required.
+---
+
+## TL;DR
+
+MongoDB Aggregation Pipeline is your go-to for transforming data efficiently—filter, group, unwind, join, and more, all server-side. This guide focuses on practical stages with real-world snippets using the native MongoDB Node.js driver (pure MongoDB, no Mongoose). Master these patterns for analytics, reports, and complex queries without ORM overhead.
+
+## Preface
+
+Aggregation Pipeline is where [MongoDB](https://www.mongodb.com/) truly flexes—turning raw documents into insights with chained stages. Whether it's filtering sales data, totaling by category, handling arrays, or simulating joins, these patterns cover 90% of real-world needs. We'll use the native MongoDB driver in Node.js (no Mongoose) for direct, lightweight control. Examples keep an e-commerce vibe. Let's dive in!
+
+## Introduction: What is Aggregation Pipeline?
+
+A series of stages processing documents sequentially: input → stages → output. Runs in the DB for speed and efficiency.
+Why it shines:
+
+- Complex transformations without multiple queries
+- Handles nested/array data naturally
+- Perfect for dashboards, recommendations, reporting
+
+#### MongoDB vs SQL: Quick Comparison
+
+<Table
+  headers={["Feature", "MongoDB Aggregation", "SQL Equivalent"]}
+  rows={[
+    ["Filtering", "✅ $match", "✅ WHERE"],
+    [
+      "Grouping & Aggregations",
+      "✅ $group + operators",
+      "✅ GROUP BY + aggregates",
+    ],
+    ["Shaping Output", "✅ $project/$addFields", "✅ SELECT"],
+    ["Sorting & Limiting", "✅ $sort/$limit", "✅ ORDER BY/LIMIT"],
+    ["Joins", "✅ $lookup", "✅ JOIN"],
+    ["Array Handling", "✅ $unwind", "❌ Manual handling"],
+    [
+      "Multi-step Transformations",
+      "✅ Pipeline stages",
+      "❌ Multiple queries/CTEs",
+    ],
+  ]}
+/>
+
+Pipeline wins big on flexible, nested data.
+
+**Setup for Aggregation (Native MongoDB Node.js Driver)**
+
+```bash title="Terminal"
+npm install mongodb
+```
+
+Connect:
+
+```js title="JavaScript"
+import { MongoClient } from "mongodb";
+
+const client = new MongoClient(
+  process.env.MONGODB_URI || "mongodb://localhost:27017",
+);
+await client.connect();
+const db = client.db("myapp");
+```
+
+We'll use collections directly (assume `products` and `orders` collections exist).
+
+#### Aggregation Pipelines
+
+##### `Filter Data ($match)`
+
+Narrow down documents early for performance.
+
+```js title="JavaScript"
+const results = await db
+  .collection("products")
+  .aggregate([{ $match: { status: "active", price: { $gte: 50 } } }])
+  .toArray();
+```
+
+##### `Group and Total Data ($group + operators)`
+
+Aggregate totals, averages, counts by key.
+
+```js title="JavaScript"
+const results = await db
+  .collection("products")
+  .aggregate([
+    { $match: { status: "active" } },
+    {
+      $group: {
+        _id: "$category",
+        totalSales: { $sum: "$sales" },
+        avgPrice: { $avg: "$price" },
+        productCount: { $sum: 1 },
+      },
+    },
+  ])
+  .toArray();
+```
+
+##### `Unwind Arrays and Group Data ($unwind + $group)`
+
+Deconstruct arrays, then aggregate (e.g., tags analytics).
+
+```js title="JavaScript"
+const results = await db
+  .collection("products")
+  .aggregate([
+    { $unwind: "$tags" },
+    {
+      $group: {
+        _id: "$tags",
+        productsWithTag: { $sum: 1 },
+        totalSales: { $sum: "$sales" },
+      },
+    },
+    { $sort: { totalSales: -1 } },
+  ])
+  .toArray();
+```
+
+##### `Perform One-to-One Joins ($lookup basic)`
+
+Simple foreign key populate.
+
+```js title="JavaScript"
+const results = await db
+  .collection("orders")
+  .aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "userDetails",
+      },
+    },
+    { $unwind: { path: "$userDetails", preserveNullAndEmptyArrays: true } },
+  ])
+  .toArray();
+```
+
+##### `Perform Multi-Field Joins ($lookup with pipeline/let)`
+
+Join on multiple or computed fields (e.g., order items with product details).
+
+```js title="JavaScript"
+const results = await db
+  .collection("orders")
+  .aggregate([
+    { $unwind: "$products" },
+    {
+      $lookup: {
+        from: "products",
+        let: { productId: "$products.productId" },
+        pipeline: [
+          { $match: { $expr: { $eq: ["$_id", "$$productId"] } } },
+          { $match: { status: "active" } },
+        ],
+        as: "productInfo",
+      },
+    },
+    { $unwind: "$productInfo" },
+  ])
+  .toArray();
+```
+
+**Key Stages Cheat Sheet**
+
+<Table
+  headers={["Stage", "Purpose", "Common With"]}
+  rows={[
+    ["$match", "Filter early", "Always first"],
+    ["$group", "Aggregate by key", "$sum, $avg, $push"],
+    ["$unwind", "Flatten arrays", "Arrays/tags/embedded docs"],
+    ["$lookup", "Join collections", "One-to-many or computed"],
+    ["$project", "Reshape/select fields", "Cleanup output"],
+    ["$sort/$limit", "Order & paginate", "Final steps"],
+  ]}
+/>
+
+_Advanced Tips_
+
+- Index heavily used fields ($match, $sort, $group keys): `await db.collection('products').createIndex({ status: 1, category: 1 })`
+- Use `.explain('executionStats')` for optimization
+- Combine with $facet for multi-view results
+- Watch memory: Large $group can hit limits—use allowDiskUse if needed
+
+#### Conclusions
+
+These patterns—filter, group, unwind, and join—cover most aggregation needs with pure MongoDB. Going native gives you full control, better performance, and no extra abstraction layer.
+Chain them creatively and you'll handle complex data flows entirely in the DB. Practice on real data and it'll click instantly. Got a tricky scenario? Share it—let's pipeline it!
+
+## References
+
+- [$match stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/match/)
+- [$group stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/)
+- [$unwind stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/unwind/)
+- [$lookup stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/)
+- [$project stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/)
+- [$sort stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sort/)
+- [$limit stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/limit/)
+- [$skip stage](https://www.mongodb.com/docs/manual/reference/operator/aggregation/skip/)
+- [Accumulators (\$sum, \$avg, etc.) - MongoDB Documentation](https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/#accumulator-operator)

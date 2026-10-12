@@ -1,0 +1,37 @@
+---
+import { File, Folder } from "lucide-react";
+
+export interface Node {
+  id: string;
+  name: string;
+  children?: Node[];
+}
+
+interface Props {
+  nodes: Node[];
+}
+
+const { nodes } = Astro.props;
+---
+
+<ul class="flex flex-col gap-1">
+  {
+    nodes.map((node) => (
+      <li>
+        <span class="flex items-center gap-2">
+          {node.children ? (
+            <Folder className="size-4 text-muted-foreground" />
+          ) : (
+            <File className="size-4 text-muted-foreground" />
+          )}
+          {node.name}
+        </span>
+        {node.children && (
+          <div class="mt-1 ml-2 border-l border-border pl-4">
+            <Astro.self nodes={node.children} />
+          </div>
+        )}
+      </li>
+    ))
+  }
+</ul>

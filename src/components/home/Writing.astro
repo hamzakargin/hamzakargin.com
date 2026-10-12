@@ -1,0 +1,20 @@
+---
+import { ArrowRight } from "lucide-react";
+import PostList from "@/components/blog/PostList.astro";
+import Section from "@/components/layout/Section.astro";
+import SectionHeading from "@/components/layout/SectionHeading.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { getPosts } from "@/lib/blog";
+
+const posts = await getPosts();
+---
+
+<Section id="writing" class="flex flex-col items-center gap-10 py-16 md:py-24">
+  <SectionHeading title="Writing" count={posts.length} />
+  <div class="w-full max-w-3xl">
+    <PostList posts={posts.slice(0, 4)} />
+  </div>
+  <a href="/blog" class={buttonVariants({ variant: "outline", size: "sm" })}>
+    All posts <ArrowRight data-icon="inline-end" />
+  </a>
+</Section>
