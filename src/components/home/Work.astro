@@ -1,0 +1,73 @@
+---
+import { ArrowUpRight } from "lucide-react";
+import Section from "@/components/layout/Section.astro";
+import SectionHeading from "@/components/layout/SectionHeading.astro";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+
+const projects = [
+  {
+    name: "Booking platform",
+    description: "Transfer booking platform, live in 4 languages and self-hosted on a VPS.",
+    year: 2026,
+  },
+  {
+    name: "Bramble",
+    description: "Full-stack real-time messaging app.",
+    year: 2026,
+    link: "https://bramble-thmm6.sevalla.app/",
+  },
+  {
+    name: "FlowDeck",
+    description: "Retail admin panel built for teams.",
+    year: 2026,
+    link: "https://flowdeck-bay.vercel.app",
+  },
+  {
+    name: "Mynthra",
+    description: "Syntax-lit mint theme for VS Code, published on the Marketplace.",
+    year: 2025,
+    link: "https://marketplace.visualstudio.com/items?itemName=Mynthra.mynthra-theme",
+  },
+  {
+    name: "VaultCraft",
+    description: "Authentication service built from scratch.",
+    year: 2025,
+    link: "https://github.com/hamzakargin/vaultcraft",
+  },
+  {
+    name: "StoreWare",
+    description: "Full-stack e-commerce platform.",
+    year: 2025,
+    link: "https://storeware.vercel.app/",
+  },
+];
+---
+
+<Section id="work" class="flex flex-col items-center gap-10 py-16 md:py-24">
+  <SectionHeading title="Work" description="Things I’ve built and shipped." />
+  <ul class="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      projects.map((project) => {
+        const Wrapper = project.link ? "a" : "div";
+        return (
+          <li>
+            <Wrapper href={project.link} class="group block h-full rounded-(--radius-4xl) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+              <Card size="sm" className="h-full transition-shadow group-hover:shadow-lg">
+                <CardHeader>
+                  <CardTitle>{project.name}</CardTitle>
+                  <CardDescription>{project.description}</CardDescription>
+                </CardHeader>
+                <CardFooter className="mt-auto justify-between text-muted-foreground">
+                  <span class="text-xs tabular-nums">{project.year}</span>
+                  {project.link && (
+                    <ArrowUpRight className="size-4 motion-safe:transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5" />
+                  )}
+                </CardFooter>
+              </Card>
+            </Wrapper>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Section>

@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { ArrowUpRight } from "lucide-react";
+import { badgeVariants } from "@/components/ui/badge";
+import { formatLogDate } from "@/lib/log";
+
+interface Props {
+  entries: CollectionEntry<"log">[];
+}
+
+const { entries } = Astro.props;
+---
+
+<ol class="relative">
+  <span aria-hidden="true" class="absolute top-2 bottom-2 left-[3.5px] w-px bg-border"></span>
+  {
+    entries.map(({ data }, index) => {
+      const Row = data.link ? "a" : "div";
+      return (
+        <li class="relative pl-7">
+          <span
+            aria-hidden="true"
+            class:list={[
+              "absolute top-[1.15rem] left-0 size-2 rounded-full border",
+              index === 0 ? "border-foreground bg-foreground" : "border-muted-foreground bg-background",
+            ]}
+          />
+          <Row
+            href={data.link}
+            class="group grid grid-cols-[5.5rem_1fr] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring gap-x-4 gap-y-1 rounded-md py-2.5 sm:grid-cols-[5.5rem_3.5rem_1fr_auto] sm:items-center"
+          >
+            <time
+              datetime={data.date.toISOString()}
+              class="text-sm text-muted-foreground tabular-nums"
+            >
+              {formatLogDate(data.date)}
+            </time>
+            <span class={badgeVariants({ variant: "outline", className: "font-mono" })}>
+              {data.label}
+            </span>
+            <span
+              class:list={[
+                "col-span-2 text-pretty sm:col-span-1",
+                data.link && "underline-offset-4 group-hover:underline",
+              ]}
+            >
+              {data.title.en}
+            </span>
+            {data.link && (
+              <ArrowUpRight className="hidden size-4 text-muted-foreground motion-safe:transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5 group-hover:text-foreground sm:block" />
+            )}
+          </Row>
+        </li>
+      );
+    })
+  }
+</ol>
