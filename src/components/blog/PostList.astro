@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { getLocale, localizePath } from "@/i18n/utils";
 import { formatDate } from "@/lib/format";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { posts } = Astro.props;
+const locale = getLocale(Astro);
 ---
 
 <ul class="flex flex-col divide-y divide-border border-y border-border">
@@ -14,7 +16,7 @@ const { posts } = Astro.props;
     posts.map((post) => (
       <li>
         <a
-          href={`/blog/${post.id}`}
+          href={localizePath(`/blog/${post.id}`, locale)}
           class="group grid gap-x-6 gap-y-1 py-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[1fr_auto]"
         >
           <div class="flex flex-col gap-1">
@@ -25,7 +27,7 @@ const { posts } = Astro.props;
             datetime={post.data.date.toISOString()}
             class="text-sm text-muted-foreground tabular-nums sm:row-start-1 sm:col-start-2"
           >
-            {formatDate(post.data.date)}
+            {formatDate(post.data.date, locale)}
           </time>
         </a>
       </li>

@@ -3,14 +3,17 @@ import { Mail } from "lucide-react";
 import BrandIcon from "@/components/layout/BrandIcon.astro";
 import { build } from "@/lib/build";
 import { formatDate } from "@/lib/format";
+import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
 import { site } from "@/lib/site";
 
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
 const links = [
-  { href: "/about", label: "About" },
-  { href: "/#work", label: "Work" },
-  { href: "/blog", label: "Writing" },
-  { href: "/log", label: "Ship log" },
-  { href: "/#contact", label: "Contact" },
+  { href: localizePath("/about", locale), label: t("nav.about") },
+  { href: localizePath("/#work", locale), label: t("nav.work") },
+  { href: localizePath("/blog", locale), label: t("nav.writing") },
+  { href: localizePath("/log", locale), label: t("nav.shipLog") },
+  { href: localizePath("/#contact", locale), label: t("nav.contact") },
 ];
 ---
 
@@ -18,38 +21,38 @@ const links = [
   <div class="mx-auto max-w-5xl border-x border-border text-sm">
     <dl class="grid grid-cols-2 md:grid-cols-4 [&>div]:border-b [&>div]:border-border [&>div]:px-6 [&>div]:py-4 md:[&>div]:px-10">
       <div class="border-r border-border">
-        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Deployed on</dt>
-        <dd class="mt-1.5">Own VPS · Docker</dd>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.deployedOn")}</dt>
+        <dd class="mt-1.5">{t("footer.deployedValue")}</dd>
       </div>
       <div class="md:border-r md:border-border">
-        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Source code</dt>
-        <dd class="mt-1.5 text-muted-foreground">Open soon</dd>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.source")}</dt>
+        <dd class="mt-1.5 text-muted-foreground">{t("footer.sourceValue")}</dd>
       </div>
       <div class="border-r border-border">
-        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">License</dt>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.license")}</dt>
         <dd class="mt-1.5">MIT</dd>
       </div>
       <div>
-        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Typeface</dt>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.typeface")}</dt>
         <dd class="mt-1.5">Geist</dd>
       </div>
       <div class="col-span-2 md:border-r md:border-border">
-        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Built with</dt>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.builtWith")}</dt>
         <dd class="mt-1.5 flex flex-col gap-0.5 font-mono text-[13px]">
           {build.stack.map((item) => <span>{item}</span>)}
         </dd>
       </div>
       <div class="col-span-2">
-        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Last deployed</dt>
+        <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.lastDeployed")}</dt>
         <dd class="mt-1.5 flex flex-col gap-0.5">
-          <time datetime={build.date.toISOString()}>{formatDate(build.date)}</time>
+          <time datetime={build.date.toISOString()}>{formatDate(build.date, locale)}</time>
           {build.commit && <span class="font-mono text-[13px] text-muted-foreground">{build.commit}</span>}
         </dd>
       </div>
     </dl>
     <div class="flex flex-col gap-4 px-6 py-6 text-muted-foreground md:flex-row md:items-center md:justify-between md:px-10">
       <p>© {build.date.getFullYear()} {site.name}</p>
-      <nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2">
+      <nav aria-label={t("footer.label")} class="flex flex-wrap gap-x-5 gap-y-2">
         {
           links.map(({ href, label }) => (
             <a href={href} class="transition-colors hover:text-foreground">

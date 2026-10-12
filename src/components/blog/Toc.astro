@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
+import { getLocale, useTranslations } from "@/i18n/utils";
 
 interface Props {
   headings: MarkdownHeading[];
@@ -7,13 +8,14 @@ interface Props {
 }
 
 const { headings, variant = "minimap" } = Astro.props;
+const t = useTranslations(getLocale(Astro));
 const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 ---
 
 {
   items.length > 0 && variant === "minimap" && (
     <nav
-      aria-label="On this page"
+      aria-label={t("blog.onThisPage")}
       class="group fixed top-1/2 right-6 z-20 hidden -translate-y-1/2 xl:block"
     >
       <ul aria-hidden="true" class="flex flex-col items-end gap-2.5 py-2">
@@ -50,7 +52,7 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 }
 {
   items.length > 0 && variant === "inline" && (
-    <nav aria-label="On this page" class="text-sm">
+    <nav aria-label={t("blog.onThisPage")} class="text-sm">
       <ul class="flex flex-col">
         {items.map((heading) => (
           <li>

@@ -1,4 +1,6 @@
 ---
+import type { UiKey } from "@/i18n/ui";
+import { getLocale, useTranslations } from "@/i18n/utils";
 import { getCollection } from "astro:content";
 import Chip from "@/components/layout/Chip.astro";
 import Section from "@/components/layout/Section.astro";
@@ -8,19 +10,21 @@ const order = ["language", "frontend", "backend", "testing", "infra", "tools"];
 const groups = (await getCollection("stack")).toSorted(
   (a, b) => order.indexOf(a.id) - order.indexOf(b.id),
 );
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
 ---
 
 <Section id="stack" class="flex flex-col items-center gap-10 py-16 md:py-24">
-  <SectionHeading title="Stack" />
+  <SectionHeading title={t("section.stack")} />
   <dl class="w-full max-w-3xl divide-y divide-border border-y border-border">
     {
-      groups.map(({ data }, index) => (
+      groups.map(({ id, data }, index) => (
         <div class="grid sm:grid-cols-[13rem_1fr]">
           <dt class="flex items-baseline gap-2 pt-4 pb-2 sm:border-r sm:border-border sm:py-4">
             <span class="font-mono text-muted-foreground tabular-nums">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <span class="font-medium">{data.name}</span>
+            <span class="font-medium">{t(`stack.${id}` as UiKey)}</span>
           </dt>
           <dd class="pb-4 sm:py-4 sm:pl-4">
             <ul class="flex flex-wrap gap-2">

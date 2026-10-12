@@ -1,18 +1,21 @@
 ---
+import { getLocale, useTranslations } from "@/i18n/utils";
 import { ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
 import BrandIcon from "@/components/layout/BrandIcon.astro";
 import Section from "@/components/layout/Section.astro";
 import SectionHeading from "@/components/layout/SectionHeading.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { site } from "@/lib/site";
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
 ---
 
 <Section id="contact" class="flex flex-col items-center gap-8 py-20 text-center md:py-28">
-  <SectionHeading title="Contact" />
+  <SectionHeading title={t("section.contact")} />
   <div class="flex max-w-xl flex-col gap-3">
-    <p class="text-xl text-balance md:text-2xl">Open to remote, hybrid or on-site roles.</p>
+    <p class="text-xl text-balance md:text-2xl">{t("contact.title")}</p>
     <p class="text-pretty text-muted-foreground">
-      Have a role, a project or a question? Email is the fastest way to reach me.
+      {t("contact.lead")}
     </p>
   </div>
   <div class="flex items-center gap-1 rounded-full border border-border bg-muted/40 p-1 pl-4">
@@ -25,7 +28,9 @@ import { site } from "@/lib/site";
     <button
       type="button"
       data-copy={site.email}
-      aria-label="Copy email address"
+      aria-label={t("contact.copy")}
+      data-label-copy={t("contact.copy")}
+      data-label-copied={t("contact.copied")}
       class={buttonVariants({ variant: "ghost", size: "icon-sm", className: "group rounded-full" })}
     >
       <Copy className="group-data-copied:hidden" />
@@ -33,11 +38,11 @@ import { site } from "@/lib/site";
     </button>
   </div>
   <p class="flex items-center gap-1.5 text-sm text-muted-foreground">
-    <MapPin className="size-3.5" /> Antalya, Turkey · UTC+3
+    <MapPin className="size-3.5" /> {t("contact.location")}
   </p>
   <div class="flex flex-wrap justify-center gap-3">
     <a class={buttonVariants()} href={`mailto:${site.email}`}>
-      <Mail data-icon="inline-start" /> Send an email
+      <Mail data-icon="inline-start" /> {t("contact.send")}
     </a>
     <a class={buttonVariants({ variant: "outline" })} href={site.linkedin}>
       <BrandIcon name="LinkedIn" class="size-4" /> LinkedIn <ArrowUpRight data-icon="inline-end" />
@@ -54,10 +59,10 @@ import { site } from "@/lib/site";
       try {
         await navigator.clipboard.writeText(button.dataset.copy ?? "");
         button.setAttribute("data-copied", "");
-        button.setAttribute("aria-label", "Copied");
+        button.setAttribute("aria-label", button.dataset.labelCopied ?? "");
         setTimeout(() => {
           button.removeAttribute("data-copied");
-          button.setAttribute("aria-label", "Copy email address");
+          button.setAttribute("aria-label", button.dataset.labelCopy ?? "");
         }, 1500);
       } catch {}
     });

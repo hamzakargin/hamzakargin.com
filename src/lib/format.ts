@@ -1,5 +1,11 @@
-export function formatMonth(date: Date) {
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+import { defaultLocale, intlLocales, type Locale } from "@/i18n/ui";
+
+export function formatMonth(date: Date, locale: Locale = defaultLocale) {
+  return date.toLocaleDateString(intlLocales[locale], {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }
 
 function formatNumericMonth(date: Date) {
@@ -21,8 +27,8 @@ export function formatDuration(start: Date, end = new Date()) {
   return [years && `${years}y`, rest && `${rest}m`].filter(Boolean).join(" ");
 }
 
-export function formatDate(date: Date) {
-  return date.toLocaleDateString("en-US", {
+export function formatDate(date: Date, locale: Locale = defaultLocale) {
+  return date.toLocaleDateString(intlLocales[locale], {
     day: "numeric",
     month: "short",
     year: "numeric",

@@ -7,6 +7,11 @@ import { defineConfig } from "astro/config";
 
 export default defineConfig({
   site: "https://hamzakargin.com",
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "ru", "tr", "de"],
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [
     react(),
     expressiveCode({

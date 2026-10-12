@@ -1,4 +1,5 @@
 ---
+import { getLocale, useTranslations } from "@/i18n/utils";
 import { getCollection } from "astro:content";
 import { Building2 } from "lucide-react";
 import Section from "@/components/layout/Section.astro";
@@ -9,10 +10,12 @@ import { formatDuration, formatRange } from "@/lib/format";
 const experience = (await getCollection("experience")).toSorted(
   (a, b) => b.data.start.valueOf() - a.data.start.valueOf(),
 );
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
 ---
 
 <Section id="experience" class="flex flex-col items-center gap-10 py-16 md:py-24">
-  <SectionHeading title="Experience" />
+  <SectionHeading title={t("section.experience")} />
   <ul class="flex w-full max-w-3xl flex-col divide-y divide-border border-y border-border">
     {
       experience.map(({ data }) => (

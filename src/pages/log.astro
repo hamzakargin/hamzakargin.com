@@ -3,17 +3,20 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
 import Section from "@/components/layout/Section.astro";
 import LogList from "@/components/log/LogList.astro";
 import Layout from "@/layouts/Layout.astro";
+import { getLocale, useTranslations } from "@/i18n/utils";
+
 import { getLogEntries } from "@/lib/log";
 
+const t = useTranslations(getLocale(Astro));
 const entries = await getLogEntries();
 const years = Map.groupBy(entries, (entry) => entry.data.date.getUTCFullYear());
 ---
 
-<Layout title="Ship log · Hamza Kargin" description="A dated record of what I’ve shipped.">
+<Layout title={`${t("log.title")} · Hamza Kargin`} description={t("log.description")}>
   <Section class="flex flex-col gap-3 py-16 md:py-24">
-    <Breadcrumbs items={[{ label: "Ship log" }]} />
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Ship log</h1>
-    <p class="text-lg text-muted-foreground">A dated record of what I’ve shipped.</p>
+    <Breadcrumbs items={[{ label: t("log.title") }]} />
+    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">{t("log.title")}</h1>
+    <p class="text-lg text-muted-foreground">{t("log.description")}</p>
   </Section>
   {
     [...years].map(([year, items]) => (

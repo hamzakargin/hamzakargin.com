@@ -1,4 +1,5 @@
 ---
+import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
 import { ArrowRight } from "lucide-react";
 import Section from "@/components/layout/Section.astro";
 import SectionHeading from "@/components/layout/SectionHeading.astro";
@@ -9,14 +10,16 @@ import { getLogEntries } from "@/lib/log";
 const allEntries = await getLogEntries();
 const total = allEntries.length;
 const entries = allEntries.slice(0, 6);
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
 ---
 
 <Section id="log" class="flex flex-col items-center gap-10 py-16 md:py-24">
-  <SectionHeading title="Ship log" count={total} />
+  <SectionHeading title={t("section.shipLog")} count={total} />
   <div class="w-full max-w-3xl">
     <LogList entries={entries} />
   </div>
-  <a href="/log" class={buttonVariants({ variant: "outline", size: "sm" })}>
-    Full log <ArrowRight data-icon="inline-end" />
+  <a href={localizePath("/log", locale)} class={buttonVariants({ variant: "outline", size: "sm" })}>
+    {t("shipLog.full")} <ArrowRight data-icon="inline-end" />
   </a>
 </Section>
