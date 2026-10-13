@@ -31,6 +31,19 @@ src/
 └── styles/       Theme
 ```
 
+## Adding content
+
+Everything lives in `src/content/` and is validated at build time.
+
+| Content                                      | Location                 |
+| -------------------------------------------- | ------------------------ |
+| Blog post                                    | `blog/<slug>.mdx`        |
+| Ship log entry                               | `log/<date>-<name>.yaml` |
+| Project                                      | `projects/<name>.md`     |
+| Experience, education, certifications, stack | `*.yaml`                 |
+
+Posts with `draft: true` are hidden. Social images, RSS, sitemap and search are generated from the content.
+
 ## Deployment
 
 Pushes to `main` build a Docker image served by nginx and deploy it with [Dokploy](https://dokploy.com).
