@@ -1,0 +1,19 @@
+---
+import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
+import { site } from "@/lib/site";
+
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": new URL("/#website", Astro.site).href,
+  name: site.name,
+  url: new URL(localizePath("/", locale), Astro.site).href,
+  description: t("meta.description"),
+  inLanguage: locale,
+  publisher: { "@id": new URL("/#person", Astro.site).href },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

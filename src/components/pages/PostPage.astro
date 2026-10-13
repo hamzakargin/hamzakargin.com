@@ -2,6 +2,7 @@
 import { getImage } from "astro:assets";
 import { type CollectionEntry, render } from "astro:content";
 import { ArrowUp, ChevronDown, TextAlignStart } from "lucide-react";
+import PostSchema from "@/components/blog/PostSchema.astro";
 import Toc from "@/components/blog/Toc.astro";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
 import Section from "@/components/layout/Section.astro";
@@ -35,6 +36,7 @@ const minutes = Math.max(1, Math.round((post.body ?? "").split(/\s+/).length / 2
   canonicalPath={`/blog/${post.id}`}
   alternates={false}
 >
+  <PostSchema post={post} image={ogImage} />
   <div
     aria-hidden="true"
     data-reading-bar

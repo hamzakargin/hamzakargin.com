@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { site } from "@/lib/site";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  image?: string;
+}
+
+const { post, image } = Astro.props;
+const url = new URL(`/blog/${post.id}`, Astro.site).href;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": `${url}#article`,
+  headline: post.data.title,
+  description: post.data.summary,
+  url,
+  mainEntityOfPage: url,
+  datePublished: post.data.date.toISOString(),
+  dateModified: (post.data.modifiedTime ?? post.data.date).toISOString(),
+  inLanguage: "en",
+  keywords: post.data.tags,
+  image: image ? new URL(image, Astro.site).href : undefined,
+  author: { "@type": "Person", "@id": new URL("/#person", Astro.site).href, name: site.name, url: Astro.site?.href },
+  publisher: { "@id": new URL("/#person", Astro.site).href },
+  isPartOf: { "@id": new URL("/#website", Astro.site).href },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

@@ -6,6 +6,7 @@ const t = useTranslations(getLocale(Astro));
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": new URL("/#person", Astro.site).href,
   name: site.name,
   jobTitle: t("about.role"),
   url: Astro.site?.href,
