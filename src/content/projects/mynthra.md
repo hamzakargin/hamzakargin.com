@@ -9,5 +9,5 @@ homepage: https://marketplace.visualstudio.com/items?itemName=Mynthra.mynthra-th
 github: https://github.com/hamzakargin/Mynthra
 techstack: [TypeScript, JSON, Node.js]
 dateCreated: 2025-11-30
-featured: true
+featured: false
 ---

@@ -13,7 +13,7 @@ const t = useTranslations(locale);
 
 <Section id="work" class="flex flex-col items-center gap-10 py-16 md:py-24">
   <SectionHeading title={t("section.work")} count={projects.length} />
-  <ul class="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <ul class="grid w-full gap-4 sm:grid-cols-2">
     {
       projects.map(({ data: project }) => {
         const link = project.homepage ?? project.github;

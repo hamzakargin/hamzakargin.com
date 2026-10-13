@@ -10,5 +10,5 @@ github: https://github.com/hamzakargin/flowdeck
 techstack:
   [Next.js, React, TypeScript, TanStack Table, Recharts, React Hook Form, Zod, Tailwind CSS]
 dateCreated: 2026-01-04
-featured: true
+featured: false
 ---

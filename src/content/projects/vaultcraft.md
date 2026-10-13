@@ -8,5 +8,5 @@ description:
 github: https://github.com/hamzakargin/vaultcraft
 techstack: [Next.js, Mongoose, Nodemailer, JWT]
 dateCreated: 2025-07-29
-featured: true
+featured: false
 ---
