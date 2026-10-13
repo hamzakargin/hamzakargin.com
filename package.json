@@ -2,8 +2,13 @@
   "name": "hamzakargin.com",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://hamzakargin.com",
   "license": "MIT",
   "author": "Hamza Kargin (https://hamzakargin.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamzakargin/hamzakargin.com.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -20,7 +25,6 @@
     "prepare": "lefthook install"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.3",
     "@astrojs/mdx": "^8.0.3",
     "@astrojs/react": "^7.0.1",
     "@astrojs/rss": "^4.0.19",
