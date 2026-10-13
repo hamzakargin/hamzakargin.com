@@ -16,7 +16,9 @@ const links = [
 
 <header class="sticky top-0 z-20 border-b border-border bg-background/80 px-4 backdrop-blur md:px-6">
   <div class="mx-auto flex h-14 max-w-5xl items-center justify-between border-x border-border px-6 md:px-10">
-    <a href={localizePath("/", locale)} class="font-medium tracking-tight whitespace-nowrap">Hamza Kargin</a>
+    <a href={localizePath("/", locale)} class="flex items-center">
+      <img src="/favicon.svg" alt="Hamza Kargin" width="28" height="28" class="size-7" />
+    </a>
     <nav class="flex items-center gap-1">
       {
         links.map(({ href, label }) => (
