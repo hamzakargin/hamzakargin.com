@@ -6,7 +6,7 @@ This is a personal website, so blog posts, projects and other personal content a
 
 ## Setup
 
-Requires [Bun](https://bun.sh) 1.3 or later.
+Requires [Bun](https://bun.sh) 1.4 or later.
 
 ```sh
 git clone https://github.com/hamzakargin/hamzakargin.com.git

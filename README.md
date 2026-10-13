@@ -6,7 +6,7 @@ Built with [Astro](https://astro.build), [Tailwind CSS](https://tailwindcss.com)
 
 ## Getting started
 
-Requires [Bun](https://bun.sh) 1.3 or later.
+Requires [Bun](https://bun.sh) 1.4 or later.
 
 ```sh
 bun install
