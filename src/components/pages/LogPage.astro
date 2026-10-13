@@ -3,16 +3,20 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
 import Section from "@/components/layout/Section.astro";
 import LogList from "@/components/log/LogList.astro";
 import Layout from "@/layouts/Layout.astro";
+import { ogImagePath } from "@/lib/og";
 import { getLocale, useTranslations } from "@/i18n/utils";
 
 import { getLogEntries } from "@/lib/log";
 
-const t = useTranslations(getLocale(Astro));
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
 const entries = await getLogEntries();
 const years = Map.groupBy(entries, (entry) => entry.data.date.getUTCFullYear());
 ---
 
-<Layout title={`${t("log.title")} · Hamza Kargin`} description={t("log.description")}>
+<Layout title={`${t("log.title")} · Hamza Kargin`} description={t("log.description")}
+  image={ogImagePath("log", locale)}
+>
   <Section class="flex flex-col gap-3 py-16 md:py-24">
     <Breadcrumbs items={[{ label: t("log.title") }]} />
     <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">{t("log.title")}</h1>

@@ -1,4 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "ignore": ["src/components/ui/**", "src/lib/utils.ts", "src/content/**"]
+  "ignore": ["src/components/ui/**", "src/lib/utils.ts", "src/content/**"],
+  "ignoreDependencies": ["@fontsource/geist"]
 }

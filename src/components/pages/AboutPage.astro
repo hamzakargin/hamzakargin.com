@@ -8,6 +8,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
 import Section from "@/components/layout/Section.astro";
 import { buttonVariants } from "@/components/ui/button";
 import Layout from "@/layouts/Layout.astro";
+import { ogImagePath } from "@/lib/og";
 import { site } from "@/lib/site";
 import { getLocale, useTranslations } from "@/i18n/utils";
 import { intlLocales } from "@/i18n/ui";
@@ -26,7 +27,9 @@ const socials = [
 
 ---
 
-<Layout title={`${t("about.title")} · Hamza Kargin`} description={t("about.description")}>
+<Layout title={`${t("about.title")} · Hamza Kargin`} description={t("about.description")}
+  image={ogImagePath("about", locale)}
+>
   <Section class="flex flex-col gap-10 py-12 md:py-20">
     <div class="mx-auto flex w-full max-w-2xl flex-col gap-10">
       <Breadcrumbs items={[{ label: t("about.title") }]} />

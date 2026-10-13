@@ -9,9 +9,11 @@ import Stack from "@/components/home/Stack.astro";
 import Writing from "@/components/home/Writing.astro";
 import Work from "@/components/home/Work.astro";
 import Layout from "@/layouts/Layout.astro";
+import { ogImagePath } from "@/lib/og";
+import { getLocale } from "@/i18n/utils";
 ---
 
-<Layout>
+<Layout image={ogImagePath("home", getLocale(Astro))}>
   <Hero />
   <ShipLog />
   <Work />
