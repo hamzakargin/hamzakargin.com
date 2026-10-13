@@ -12,6 +12,7 @@ interface Props {
   type?: "website" | "article";
   canonicalPath?: string;
   alternates?: boolean;
+  noindex?: boolean;
 }
 
 const locale = getLocale(Astro);
@@ -23,11 +24,12 @@ const {
   type = "website",
   canonicalPath,
   alternates = true,
+  noindex = false,
 } = Astro.props;
 const pathname = cleanPath(Astro.url);
 const basePath = stripLocale(pathname) || "/";
 const canonical = new URL(canonicalPath ?? pathname, Astro.site);
-const alternateLinks = alternates
+const alternateLinks = alternates && !noindex
   ? [
       ...locales.map((code) => ({
         hreflang: code,
@@ -48,7 +50,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {alternateLinks.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
     <meta property="og:locale" content={intlLocales[locale].replace("-", "_")} />
     <meta property="og:type" content={type} />

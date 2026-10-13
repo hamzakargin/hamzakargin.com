@@ -1,0 +1,22 @@
+---
+import { ArrowLeft } from "lucide-react";
+import Section from "@/components/layout/Section.astro";
+import { buttonVariants } from "@/components/ui/button";
+import Layout from "@/layouts/Layout.astro";
+import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
+
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
+---
+
+<Layout title={`${t("notFound.title")} · Hamza Kargin`} description={t("notFound.description")} noindex>
+  <Section class="flex flex-col items-center gap-6 py-28 text-center md:py-40">
+    <p class="text-sm font-medium text-muted-foreground tabular-nums">404</p>
+    <h1 class="text-4xl font-semibold tracking-tight text-balance md:text-5xl">{t("notFound.title")}</h1>
+    <p class="max-w-md text-lg text-pretty text-muted-foreground">{t("notFound.description")}</p>
+    <a class={buttonVariants({ variant: "outline" })} href={localizePath("/", locale)}>
+      <ArrowLeft data-icon="inline-start" aria-hidden="true" />
+      {t("notFound.home")}
+    </a>
+  </Section>
+</Layout>

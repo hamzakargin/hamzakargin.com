@@ -91,6 +91,9 @@ const en = {
   "time.ahead": "{n}h ahead",
   "time.behind": "{n}h behind",
   "language.label": "Language",
+  "notFound.title": "Page not found",
+  "notFound.description": "This page doesn’t exist or has moved.",
+  "notFound.home": "Back to home",
 } as const;
 
 export type UiKey = keyof typeof en;
@@ -171,6 +174,9 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "time.ahead": "на {n} ч больше, чем у вас",
     "time.behind": "на {n} ч меньше, чем у вас",
     "language.label": "Язык",
+    "notFound.title": "Страница не найдена",
+    "notFound.description": "Такой страницы нет или она была перемещена.",
+    "notFound.home": "На главную",
   },
   tr: {
     "meta.description":
@@ -248,6 +254,9 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "time.ahead": "sizden {n} saat ileride",
     "time.behind": "sizden {n} saat geride",
     "language.label": "Dil",
+    "notFound.title": "Sayfa bulunamadı",
+    "notFound.description": "Bu sayfa yok ya da taşınmış.",
+    "notFound.home": "Ana sayfaya dön",
   },
   de: {
     "meta.description":
@@ -325,5 +334,8 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "time.ahead": "{n} Std. weiter als bei Ihnen",
     "time.behind": "{n} Std. früher als bei Ihnen",
     "language.label": "Sprache",
+    "notFound.title": "Seite nicht gefunden",
+    "notFound.description": "Diese Seite existiert nicht oder wurde verschoben.",
+    "notFound.home": "Zur Startseite",
   },
 };

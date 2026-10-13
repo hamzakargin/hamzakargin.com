@@ -38,7 +38,7 @@ export default defineConfig({
         defaultLocale: "en",
         locales: { en: "en", ru: "ru", tr: "tr", de: "de" },
       },
-      filter: (page) => !/\/(ru|tr|de)\/blog\/.+/.test(new URL(page).pathname),
+      filter: (page) => !/^(\/(ru|tr|de))?\/(404$|blog\/.+)/.test(new URL(page).pathname),
     }),
   ],
   vite: {
