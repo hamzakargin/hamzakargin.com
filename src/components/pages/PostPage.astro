@@ -1,5 +1,4 @@
 ---
-import { getImage } from "astro:assets";
 import { type CollectionEntry, render } from "astro:content";
 import { ArrowUp, ChevronDown, TextAlignStart } from "lucide-react";
 import PostSchema from "@/components/blog/PostSchema.astro";
@@ -11,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import TreeView from "@/components/mdx/TreeView.astro";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate } from "@/lib/format";
+import { postOgImagePath } from "@/lib/og";
 import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
 
 
@@ -22,9 +22,7 @@ const { post } = Astro.props;
 const locale = getLocale(Astro);
 const t = useTranslations(locale);
 const { Content, headings } = await render(post);
-const ogImage = post.data.cover
-  ? (await getImage({ src: post.data.cover, width: 1200, format: "png" })).src
-  : undefined;
+const ogImage = postOgImagePath(post.id);
 const minutes = Math.max(1, Math.round((post.body ?? "").split(/\s+/).length / 220));
 ---
 

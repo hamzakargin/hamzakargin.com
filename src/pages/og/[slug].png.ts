@@ -1,6 +1,6 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 import { locales, type Locale } from "@/i18n/ui";
-import { ogPages, renderOg, type OgPage } from "@/lib/og";
+import { ogPages, pageOg, renderOg, type OgPage } from "@/lib/og";
 
 export const getStaticPaths = (() =>
   locales.flatMap((locale) =>
@@ -8,6 +8,6 @@ export const getStaticPaths = (() =>
   )) satisfies GetStaticPaths;
 
 export const GET: APIRoute<{ locale: Locale; page: OgPage }> = async ({ props }) =>
-  new Response(new Uint8Array(await renderOg(props.page, props.locale)), {
+  new Response(new Uint8Array(await renderOg(pageOg(props.page, props.locale))), {
     headers: { "Content-Type": "image/png" },
   });

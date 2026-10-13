@@ -3,5 +3,12 @@
   "version": "0.2",
   "language": "en",
   "files": ["README.md", "src/content/blog/**/*.mdx"],
-  "words": ["Dokploy", "hamzakargin", "Kargin"]
+  "words": ["Dokploy", "hamzakargin", "Kargin"],
+  "ignoreRegExpList": ["/[\\u0400-\\u04FF]+/g"],
+  "overrides": [
+    {
+      "filename": "src/content/blog/astro-i18n.mdx",
+      "words": ["Buchungsplattform", "Eine", "Sprachen"]
+    }
+  ]
 }

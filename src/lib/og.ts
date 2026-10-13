@@ -68,11 +68,16 @@ const plus = (x: number, y: number) => [
   }),
 ];
 
-export async function renderOg(page: OgPage, locale: Locale) {
+export const pageOg = (page: OgPage, locale: Locale) => {
   const t = useTranslations(locale);
   const [titleKey, subtitleKey] = text[page];
-  const title = titleKey ? t(titleKey) : site.name;
-  const subtitle = t(subtitleKey).replace(/\.$/, "");
+  return { title: titleKey ? t(titleKey) : site.name, subtitle: t(subtitleKey) };
+};
+
+export const postOgImagePath = (id: string) => `/og/blog/${id}.png`;
+
+export async function renderOg({ title, subtitle }: { title: string; subtitle: string }) {
+  const long = title.length > 22;
   const mark = await readFile("public/favicon.svg");
   const tree = el(
     "div",
@@ -113,17 +118,36 @@ export async function renderOg(page: OgPage, locale: Locale) {
         {
           position: "absolute",
           left: 106,
-          top: 240,
-          fontSize: 92,
-          fontWeight: 800,
-          letterSpacing: "-0.05em",
+          top: long ? 225 : 240,
+          width: 980,
+          display: "flex",
+          flexDirection: "column",
+          gap: long ? 24 : 28,
         },
-        title,
-      ),
-      el(
-        "div",
-        { position: "absolute", left: 110, top: 368, width: 900, fontSize: 34, color: "#a1a1aa" },
-        subtitle,
+        [
+          el(
+            "div",
+            {
+              fontSize: long ? 64 : 92,
+              fontWeight: 800,
+              letterSpacing: "-0.05em",
+              lineHeight: 1.1,
+              lineClamp: 2,
+            },
+            title,
+          ),
+          el(
+            "div",
+            {
+              paddingLeft: 4,
+              fontSize: long ? 30 : 34,
+              lineHeight: 1.35,
+              color: "#a1a1aa",
+              lineClamp: 2,
+            },
+            subtitle.replace(/\.$/, ""),
+          ),
+        ],
       ),
       el(
         "div",
