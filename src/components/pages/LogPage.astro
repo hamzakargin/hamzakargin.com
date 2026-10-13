@@ -14,12 +14,14 @@ const entries = await getLogEntries();
 const years = Map.groupBy(entries, (entry) => entry.data.date.getUTCFullYear());
 ---
 
-<Layout title={`${t("log.title")} · Hamza Kargin`} description={t("log.description")}
+<Layout
+  title={`${t("log.title")} · Hamza Kargin`}
+  description={t("log.description")}
   image={ogImagePath("log", locale)}
 >
   <Section class="flex flex-col gap-3 py-16 md:py-24">
     <Breadcrumbs items={[{ label: t("log.title") }]} />
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">{t("log.title")}</h1>
+    <h1 class="text-4xl font-extrabold tracking-[-0.04em] md:text-5xl">{t("log.title")}</h1>
     <p class="text-lg text-muted-foreground">{t("log.description")}</p>
   </Section>
   {
