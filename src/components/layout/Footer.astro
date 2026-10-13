@@ -132,37 +132,19 @@ const links = [
 </footer>
 
 <script>
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  import { readTheme, setTheme, type Theme } from "@/lib/theme";
+
   const options = [...document.querySelectorAll<HTMLButtonElement>("[data-theme-option]")];
 
-  function read() {
-    try {
-      return localStorage.getItem("theme") ?? "system";
-    } catch {
-      return "system";
-    }
-  }
-
-  function apply(theme: string) {
-    const dark = theme === "dark" || (theme === "system" && media.matches);
-    document.documentElement.classList.toggle("dark", dark);
+  function sync(theme: Theme) {
     for (const option of options) {
       option.setAttribute("aria-checked", String(option.dataset.themeOption === theme));
     }
   }
 
   for (const option of options) {
-    option.addEventListener("click", () => {
-      const theme = option.dataset.themeOption ?? "system";
-      try {
-        if (theme === "system") localStorage.removeItem("theme");
-        else localStorage.setItem("theme", theme);
-      } catch {}
-      apply(theme);
-    });
+    option.addEventListener("click", () => setTheme((option.dataset.themeOption as Theme) ?? "system"));
   }
-  media.addEventListener("change", () => {
-    if (read() === "system") apply("system");
-  });
-  apply(read());
+  document.addEventListener("themechange", (event) => sync((event as CustomEvent<Theme>).detail));
+  sync(readTheme());
 </script>
