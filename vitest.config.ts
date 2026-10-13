@@ -1,8 +1,10 @@
-
 import { getViteConfig } from "astro/config";
+import type { ViteUserConfig } from "vitest/config";
 
-export default getViteConfig({
+const config: ViteUserConfig = {
   test: {
     include: ["tests/unit/**/*.test.ts"],
   },
-});
+};
+
+export default getViteConfig(config);
