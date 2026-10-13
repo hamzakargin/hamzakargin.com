@@ -33,11 +33,15 @@ const links = [
       </div>
       <div class="md:border-r md:border-border">
         <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.source")}</dt>
-        <dd class="mt-1.5 text-muted-foreground">{t("footer.sourceValue")}</dd>
+        <dd class="mt-1.5">
+          <a href={site.repo} class="underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground">hamzakargin.com</a>
+        </dd>
       </div>
       <div class="border-r border-border">
         <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.license")}</dt>
-        <dd class="mt-1.5">MIT</dd>
+        <dd class="mt-1.5">
+          <a href={`${site.repo}/blob/main/LICENSE`} class="underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground">MIT</a>
+        </dd>
       </div>
       <div>
         <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.typeface")}</dt>
@@ -53,7 +57,13 @@ const links = [
         <dt class="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">{t("footer.lastDeployed")}</dt>
         <dd class="mt-1.5 flex flex-col gap-0.5">
           <time datetime={build.date.toISOString()}>{formatDate(build.date, locale)}</time>
-          {build.commit && <span class="font-mono text-[13px] text-muted-foreground">{build.commit}</span>}
+          {
+            build.commit && (
+              <a href={`${site.repo}/commit/${build.commit}`} class="w-fit font-mono text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+                {build.commit}
+              </a>
+            )
+          }
         </dd>
       </div>
     </dl>
