@@ -20,8 +20,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-    env:
-      DOKPLOY_DEPLOY_WEBHOOK: ${{ secrets.DOKPLOY_DEPLOY_WEBHOOK }}
+    outputs:
+      deploy: ${{ steps.webhook.outputs.enabled }}
 
     steps:
       - name: Checkout
@@ -58,6 +58,23 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=min
 
+      - name: Check deploy webhook
+        id: webhook
+        env:
+          DOKPLOY_DEPLOY_WEBHOOK: ${{ secrets.DOKPLOY_DEPLOY_WEBHOOK }}
+        run: echo "enabled=${{ env.DOKPLOY_DEPLOY_WEBHOOK != '' }}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: build-and-push
+    if: ${{ needs.build-and-push.outputs.deploy == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: production
+      url: https://hamzakargin.com
+
+    steps:
       - name: Trigger Dokploy deploy
-        if: ${{ env.DOKPLOY_DEPLOY_WEBHOOK != '' }}
+        env:
+          DOKPLOY_DEPLOY_WEBHOOK: ${{ secrets.DOKPLOY_DEPLOY_WEBHOOK }}
         run: curl -fsSL --max-time 30 -X POST "$DOKPLOY_DEPLOY_WEBHOOK"

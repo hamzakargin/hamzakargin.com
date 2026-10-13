@@ -1,0 +1,24 @@
+name: Translation fix
+description: A wrong or unnatural translation in Russian, Turkish or German.
+labels: [translation]
+body:
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options: [Русский, Türkçe, Deutsch]
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Page
+      placeholder: https://hamzakargin.com/de/about
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: Current and suggested text
+    validations:
+      required: true

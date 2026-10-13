@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/hamzakargin/hamzakargin.com/security/advisories/new
+    about: Please report security issues privately.
+  - name: Contact
+    url: https://hamzakargin.com/#contact
+    about: For anything that is not about the code, get in touch directly.
