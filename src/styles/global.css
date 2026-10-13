@@ -127,6 +127,7 @@
   }
   html {
     @apply scroll-pt-16 font-sans;
+    scrollbar-gutter: stable;
     color-scheme: light;
   }
   html.dark {
