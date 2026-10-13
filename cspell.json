@@ -3,7 +3,7 @@
   "version": "0.2",
   "language": "en",
   "files": ["README.md", "src/content/blog/**/*.mdx"],
-  "words": ["Dokploy", "hamzakargin", "Kargin"],
+  "words": ["Dokploy", "hamzakargin", "Kargin", "Trastfer"],
   "ignoreRegExpList": ["/[\\u0400-\\u04FF]+/g"],
   "overrides": [
     {

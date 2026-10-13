@@ -1,0 +1,119 @@
+---
+title: Why I Moved My Portfolio From Next.js to Astro
+date: "2026-10-13T00:00:00Z"
+summary: My personal site shipped 296 KB of JavaScript to show some text. Now it ships 2.5 KB. Here is why I switched and what changed.
+tags: [astro, nextjs, performance]
+draft: false
+---
+
+## The problem
+
+My old portfolio was a Next.js 16 app on Vercel. It worked, it looked fine, and it was the wrong tool for the job.
+
+A portfolio is mostly text: who I am, what I built, a few posts. Nothing on the page changes per visitor. Still, the home page loaded **16 JavaScript files, about 296 KB gzipped**, on every visit. The text was already in the HTML, but the browser still had to download, parse and hydrate React for a page that never needed to be interactive.
+
+That is not a Next.js problem. Next.js is built for applications, and I was using it for a document.
+
+## Why Astro
+
+Astro starts from the opposite default: every page is HTML, and JavaScript is opt-in. Components run at build time and disappear. If a part of the page really needs to be interactive, you mark that one part and only it ships to the browser.
+
+The numbers for the new home page:
+
+| | Next.js | Astro |
+| --- | --- | --- |
+| JavaScript files | 16 | 2 |
+| JavaScript (gzipped) | ~296 KB | ~2.5 KB |
+| HTML (gzipped) | ~54 KB | ~35 KB |
+
+Same kind of content, now in four languages, with about 99% less JavaScript.
+
+## I kept React, just not in the browser
+
+I like [shadcn/ui](https://ui.shadcn.com) and did not want to give it up. Astro renders React components to HTML at build time, so I still use them. Without a `client:*` directive they never hydrate:
+
+```astro title="Header.astro"
+---
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<a href="/blog" class={buttonVariants({ variant: "ghost", size: "sm" })}>Writing</a>
+```
+
+The button styles come from the same component library. The browser only gets an `<a>` tag.
+
+## Small scripts instead of islands
+
+The site still has a theme switcher, a mobile menu and a search dialog. None of them need React. A `<script>` inside an Astro component is bundled, deduplicated and loaded once:
+
+```astro title="ThemeButton.astro"
+<button type="button" data-theme-toggle>Toggle theme</button>
+
+<script>
+  const button = document.querySelector("[data-theme-toggle]");
+
+  button?.addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  });
+</script>
+```
+
+The search uses a native `<dialog>` element, so focus trapping, Escape to close and the backdrop come from the browser for free.
+
+## Content with types
+
+Blog posts, projects and the ship log are [content collections](https://docs.astro.build/en/guides/content-collections/). The schema is checked at build time, so a typo in a date breaks the build instead of the page:
+
+```ts title="src/content.config.ts"
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+
+const blog = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    date: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog };
+```
+
+## Four languages without a library
+
+The site is in English, Russian, Turkish and German. Astro's built-in i18n routing handles the URLs, and the translations are a typed object. English stays at the root, the others get a prefix:
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "ru", "tr", "de"],
+    routing: { prefixDefaultLocale: false },
+  },
+});
+```
+
+A unit test checks that every language has every key, so a missing translation fails CI before a visitor ever sees it.
+
+## Things that used to need a server
+
+- **Search**: [Pagefind](https://pagefind.app) indexes the built HTML after `astro build`. The index is static files and only downloads when someone opens search.
+- **Social images**: an endpoint renders OG images with satori at build time, one per page and language.
+- **RSS and sitemap**: official integrations, a few lines each.
+
+## Hosting
+
+Static output means the whole site is a folder of files. It now runs as an nginx container on my own server instead of Vercel. No functions, no cold starts, nothing to scale.
+
+## Would I use Next.js again?
+
+Yes, for an application. For anything with logged-in users, dashboards or data that changes per request, Next.js is still what I reach for.
+
+For a site that is mostly words, start with HTML and add JavaScript only where it earns its place. Astro makes that the default instead of something you fight for.
+
+The source code is on [GitHub](https://github.com/hamzakargin/hamzakargin.com).

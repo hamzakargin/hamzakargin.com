@@ -1,0 +1,59 @@
+---
+title: What I Learned Shipping My First Production App
+date: "2026-10-13T00:00:00Z"
+summary: Five months from the first commit to real bookings. The lessons that had nothing to do with which framework I picked.
+tags: [career, production, lessons]
+draft: false
+---
+
+## The project
+
+[Trastfer](https://trastfer.ru) is an airport transfer booking platform in Antalya. A traveler picks a route, books a car and gets picked up at the airport. I started it in April 2026 and it went live in September, in four languages, on a server I run myself.
+
+This is not a post about the stack. Most of what I learned in those five months would be the same with any framework.
+
+## A side project and a product are different jobs
+
+Before launch, a bug is a note in a list. After launch, a bug is someone standing in an arrivals hall.
+
+That changes how you work. I stopped asking "does it work on my machine?" and started asking "what happens when this fails at the worst possible moment?" Every form, every booking step, every email got that question. Most of the time the answer was a clear error message and a way to reach a person.
+
+## Ship small, ship often
+
+Big releases feel productive and are terrible to debug. When something breaks after a release that touched twenty things, you are guessing.
+
+I moved to small changes, each one deployed on its own. If something goes wrong, the last change is the suspect, and rolling it back takes a minute. It feels slower. It is faster.
+
+## Boring is a feature
+
+Every new tool is one more thing that can break at 2 AM. For a product people rely on, I picked technology I already understood and could debug without a search engine.
+
+The interesting choices belong in side projects. Production gets the boring ones.
+
+## Four languages is not a translation task
+
+Supporting English, Russian, Turkish and German was more than translating strings. Dates, prices, phone numbers and addresses are written differently. A sentence that fits a button in English wraps in German. Emails, error messages and confirmation pages all need the same care as the landing page.
+
+The rule I ended up with: if a user can see it, it is translated, and someone who speaks the language has read it.
+
+## Owning the server means owning the night
+
+Self-hosting gave me control and a smaller bill. It also means nobody else is watching. Backups, updates, certificates and monitoring are now my job, and they need to work on days I am not thinking about them.
+
+Automate them early. The day you need a backup is the day you find out whether it works.
+
+## Talk to the people using it
+
+The most useful feedback did not come from analytics. It came from people who used the product and told me what confused them. A label that made sense to me was unclear to someone reading it in their second language on a phone after a long flight.
+
+Writing code is the easy part. Understanding the person on the other side is the job.
+
+## If you are about to ship your first product
+
+- Launch earlier than feels comfortable. Real users will find the problems that matter.
+- Make every change small enough to undo.
+- Choose tools you can debug when you are tired.
+- Treat every language and every screen size as a first-class user.
+- Write down what broke and why. You will need it again.
+
+Trastfer is live, and I keep improving it every week. Shipping it taught me more than any course I have taken.

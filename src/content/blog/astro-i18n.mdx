@@ -1,0 +1,178 @@
+---
+title: Four Languages in Astro Without an i18n Library
+date: "2026-10-13T00:00:00Z"
+summary: How this site serves English, Russian, Turkish and German with Astro's built-in routing, one typed object and a few small helpers.
+tags: [astro, i18n, typescript]
+draft: false
+---
+
+## Why four languages
+
+A portfolio is read by people in different countries, and a page in your own language is easier to trust. These are the four languages I already ship in production, so this site uses them too.
+
+I wanted that without adding an i18n library. Astro already handles the routing, TypeScript can check the translations, and the rest is a few small functions.
+
+## Routing
+
+English lives at the root, every other language gets a prefix: `/about`, `/ru/about`, `/tr/about`, `/de/about`.
+
+```js title="astro.config.mjs"
+export default defineConfig({
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "ru", "tr", "de"],
+    routing: { prefixDefaultLocale: false },
+  },
+});
+```
+
+With this config, `Astro.currentLocale` tells every component which language it is rendering.
+
+## One page, two route files
+
+The page itself is a normal component. Two thin route files render it, one for English and one for the prefixed languages:
+
+```text
+src/
+├── components/pages/AboutPage.astro
+└── pages/
+    ├── about.astro
+    └── [lang]/about.astro
+```
+
+```astro title="src/pages/[lang]/about.astro"
+---
+import AboutPage from "@/components/pages/AboutPage.astro";
+import { localizedPaths } from "@/lib/paths";
+
+export const getStaticPaths = localizedPaths;
+---
+
+<AboutPage />
+```
+
+```ts title="src/lib/paths.ts"
+import { defaultLocale, locales } from "@/i18n/ui";
+
+export const localizedPaths = () =>
+  locales.filter((locale) => locale !== defaultLocale).map((lang) => ({ params: { lang } }));
+```
+
+The English file is the same without `getStaticPaths`. Every page is written once and built four times.
+
+## Translations as a typed object
+
+All interface text lives in one file. English is the source of truth, and its keys become a type:
+
+```ts title="src/i18n/ui.ts"
+export const locales = ["en", "ru", "tr", "de"] as const;
+export type Locale = (typeof locales)[number];
+export const defaultLocale: Locale = "en";
+
+const en = {
+  "nav.about": "About",
+  "blog.minRead": "{n} min read",
+};
+
+export type UiKey = keyof typeof en;
+
+export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
+  en,
+  ru: {
+    "nav.about": "Обо мне",
+    "blog.minRead": "{n} мин чтения",
+  },
+};
+```
+
+A typo in a key is now a type error, not a blank spot on the page.
+
+The translate function falls back to English and fills `{placeholders}`:
+
+```ts title="src/i18n/utils.ts"
+export function useTranslations(locale: Locale) {
+  return (key: UiKey, values: Record<string, string | number> = {}) => {
+    const text = ui[locale][key] ?? ui[defaultLocale][key] ?? key;
+    return text.replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? ""));
+  };
+}
+```
+
+```astro
+---
+const t = useTranslations(getLocale(Astro));
+---
+
+<span>{t("blog.minRead", { n: 5 })}</span>
+```
+
+## Content in the same place as the data
+
+Interface text is one thing, content is another. Project descriptions sit next to the project, with English required and the rest optional:
+
+```yaml title="src/content/projects/example.md"
+description:
+  en: "A booking platform, live in four languages."
+  de: "Eine Buchungsplattform, live in vier Sprachen."
+```
+
+```ts
+export function pick(value: { en: string } & Partial<Record<Locale, string>>, locale: Locale) {
+  return value[locale] ?? value.en;
+}
+```
+
+Blog posts are the exception. They stay in English, and the localized post URLs point their canonical link at the English one. Translating long technical posts by hand is not worth it, and machine translation is not something I want under my name.
+
+## Dates and numbers
+
+`Intl` already knows how every language writes a date. The only job is mapping the site's locale to a full one:
+
+```ts
+const intlLocales = { en: "en-US", ru: "ru-RU", tr: "tr-TR", de: "de-DE" };
+
+date.toLocaleDateString(intlLocales[locale], { month: "short", year: "numeric" });
+```
+
+That gives "Oct 2026", "окт. 2026 г.", "Eki 2026" and "Okt. 2026" without a single translation key.
+
+## Telling search engines
+
+Every page links to its other versions with `hreflang`, plus an `x-default` for everyone else:
+
+```html
+<link rel="alternate" hreflang="en" href="https://hamzakargin.com/about" />
+<link rel="alternate" hreflang="ru" href="https://hamzakargin.com/ru/about" />
+<link rel="alternate" hreflang="tr" href="https://hamzakargin.com/tr/about" />
+<link rel="alternate" hreflang="de" href="https://hamzakargin.com/de/about" />
+<link rel="alternate" hreflang="x-default" href="https://hamzakargin.com/about" />
+```
+
+The `@astrojs/sitemap` integration takes the same locales and adds the alternates to the sitemap.
+
+## Tests that catch missing translations
+
+Types catch wrong keys in code, but not a key that exists in English and was forgotten in German. A small Vitest suite does:
+
+```ts title="tests/unit/i18n.test.ts"
+describe.each(locales.filter((locale) => locale !== defaultLocale))("%s translations", (locale) => {
+  test("cover every english key", () => {
+    const missing = Object.keys(ui.en).filter((key) => typeof ui[locale][key] !== "string");
+    expect(missing).toEqual([]);
+  });
+
+  test("keep the same placeholders", () => {
+    for (const [key, text] of Object.entries(ui.en)) {
+      expect(placeholders(ui[locale][key]), key).toEqual(placeholders(text));
+    }
+  });
+});
+```
+
+The placeholder test is the one that pays off. A translation that drops `{n}` still looks fine in review and only breaks on the page.
+
+## What I would do differently
+
+Nothing big. If the site grew to dozens of languages or had translators who don't touch code, I would move the strings to JSON files and a translation platform. For four languages and one developer, a typed object and four helpers are enough.
+
+The full code is on [GitHub](https://github.com/hamzakargin/hamzakargin.com).
