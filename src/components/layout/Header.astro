@@ -44,12 +44,12 @@ const links = [
       class="-mr-2 flex size-9 items-center justify-center rounded-md md:hidden"
       data-menu-toggle
     >
-      <span class="flex flex-col items-center gap-[5px]">
+      <span class="relative h-3 w-4">
         <span
-          class="block h-[1.5px] w-3.5 bg-foreground transition-transform duration-150 group-data-open/header:translate-y-[3.25px] group-data-open/header:rotate-45"
+          class="absolute top-[5px] left-0 h-[1.5px] w-4 -translate-y-[3px] bg-foreground transition-transform duration-200 group-data-open/header:translate-y-0 group-data-open/header:rotate-45"
         ></span>
         <span
-          class="block h-[1.5px] w-3.5 bg-foreground transition-transform duration-150 group-data-open/header:-translate-y-[3.25px] group-data-open/header:-rotate-45"
+          class="absolute top-[5px] left-0 h-[1.5px] w-4 translate-y-[3px] bg-foreground transition-transform duration-200 group-data-open/header:translate-y-0 group-data-open/header:-rotate-45"
         ></span>
       </span>
     </button>
