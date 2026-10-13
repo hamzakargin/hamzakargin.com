@@ -69,6 +69,7 @@ jobs:
     if: ${{ needs.build-and-push.outputs.deploy == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions: {}
     environment:
       name: production
       url: https://hamzakargin.com
