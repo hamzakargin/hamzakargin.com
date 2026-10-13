@@ -65,7 +65,7 @@
     "pagefind": "^1.5.2",
     "satori": "^0.52.0",
     "sharp": "^0.35.5",
-    "typescript": "^6",
+    "typescript": "^7",
     "vitest": "^5.0.4"
   },
   "engines": {
