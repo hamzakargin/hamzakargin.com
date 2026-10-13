@@ -15,6 +15,7 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 {
   items.length > 0 && variant === "minimap" && (
     <nav
+      data-pagefind-ignore
       aria-label={t("blog.onThisPage")}
       class="group fixed top-1/2 right-6 z-20 hidden -translate-y-1/2 xl:block"
     >
@@ -52,7 +53,7 @@ const items = headings.filter((heading) => heading.depth === 2 || heading.depth 
 }
 {
   items.length > 0 && variant === "inline" && (
-    <nav aria-label={t("blog.onThisPage")} class="text-sm">
+    <nav aria-label={t("blog.onThisPage")} class="text-sm" data-pagefind-ignore>
       <ul class="flex flex-col">
         {items.map((heading) => (
           <li>

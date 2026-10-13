@@ -1,0 +1,294 @@
+---
+import { ArrowRight, FileText, Languages, Monitor, Moon, Search, Sun } from "lucide-react";
+import { languageNames, locales } from "@/i18n/ui";
+import { cleanPath, getLocale, localizePath, stripLocale, useTranslations } from "@/i18n/utils";
+import { getPosts } from "@/lib/blog";
+
+const locale = getLocale(Astro);
+const t = useTranslations(locale);
+const basePath = stripLocale(cleanPath(Astro.url)) || "/";
+const posts = await getPosts();
+
+const pages = [
+  { href: localizePath("/", locale), label: t("nav.home") },
+  { href: localizePath("/#work", locale), label: t("nav.work") },
+  { href: localizePath("/about", locale), label: t("nav.about") },
+  { href: localizePath("/blog", locale), label: t("nav.writing") },
+  { href: localizePath("/log", locale), label: t("nav.shipLog") },
+  { href: localizePath("/#contact", locale), label: t("nav.contact") },
+];
+const themes = [
+  { value: "system", label: t("theme.system"), icon: Monitor },
+  { value: "light", label: t("theme.light"), icon: Sun },
+  { value: "dark", label: t("theme.dark"), icon: Moon },
+];
+const item =
+  "flex h-10 w-full cursor-pointer items-center gap-3 rounded-md px-2 text-left text-sm text-muted-foreground aria-selected:bg-muted aria-selected:text-foreground [&_svg]:size-4 [&_svg]:shrink-0";
+const heading = "px-2 pt-3 pb-1.5 text-xs text-muted-foreground first:pt-1";
+---
+
+<dialog
+  aria-label={t("search.label")}
+  class="mx-auto mt-[12vh] w-[min(36rem,calc(100%-2rem))] overflow-hidden rounded-xl border border-border bg-popover p-0 text-popover-foreground opacity-100 shadow-2xl transition-[opacity,translate,display,overlay] transition-discrete duration-150 backdrop:bg-background/60 backdrop:backdrop-blur-sm starting:open:translate-y-1 starting:open:opacity-0"
+  data-command-menu
+  data-empty-text={t("search.empty")}
+>
+  <div class="flex items-center gap-3 border-b border-border px-4">
+    <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+    <input
+      type="text"
+      role="combobox"
+      aria-expanded="true"
+      aria-controls="command-list"
+      aria-autocomplete="list"
+      aria-label={t("search.label")}
+      placeholder={t("search.placeholder")}
+      autocomplete="off"
+      spellcheck="false"
+      class="h-12 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+      data-command-input
+    />
+    <kbd class="rounded border border-border px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">Esc</kbd>
+  </div>
+  <div id="command-list" role="listbox" class="max-h-[min(60vh,26rem)] overflow-y-auto p-2" data-command-list>
+    <div role="group" aria-label={t("search.results")} data-command-group hidden data-command-results-group>
+      <p class={heading}>{t("search.results")}</p>
+      <div data-command-results></div>
+    </div>
+    <div role="group" aria-label={t("search.pages")} data-command-group>
+      <p class={heading}>{t("search.pages")}</p>
+      {
+        pages.map(({ href, label }) => (
+          <a href={href} role="option" class={item} data-command-item data-keywords={label}>
+            <ArrowRight aria-hidden="true" />
+            {label}
+          </a>
+        ))
+      }
+    </div>
+    <div role="group" aria-label={t("search.posts")} data-command-group>
+      <p class={heading}>{t("search.posts")}</p>
+      {
+        posts.map((post) => (
+          <a
+            href={localizePath(`/blog/${post.id}`, locale)}
+            role="option"
+            class={item}
+            data-command-item
+            data-keywords={`${post.data.title} ${post.data.tags.join(" ")}`}
+          >
+            <FileText aria-hidden="true" />
+            <span class="truncate">{post.data.title}</span>
+          </a>
+        ))
+      }
+    </div>
+    <div role="group" aria-label={t("search.theme")} data-command-group>
+      <p class={heading}>{t("search.theme")}</p>
+      {
+        themes.map(({ value, label, icon: Icon }) => (
+          <button
+            type="button"
+            role="option"
+            class={item}
+            data-command-item
+            data-keywords={`${t("search.theme")} ${label}`}
+            data-theme-set={value}
+          >
+            <Icon aria-hidden="true" />
+            {label}
+          </button>
+        ))
+      }
+    </div>
+    <div role="group" aria-label={t("language.label")} data-command-group>
+      <p class={heading}>{t("language.label")}</p>
+      {
+        locales.map((code) => (
+          <a
+            href={localizePath(basePath, code)}
+            hreflang={code}
+            lang={code}
+            role="option"
+            class={item}
+            data-command-item
+            data-keywords={`${t("language.label")} ${languageNames[code]} ${code}`}
+          >
+            <Languages aria-hidden="true" />
+            {languageNames[code]}
+          </a>
+        ))
+      }
+    </div>
+    <p class="px-2 py-8 text-center text-sm text-muted-foreground" hidden data-command-empty></p>
+  </div>
+</dialog>
+
+<script>
+  import { setTheme, type Theme } from "@/lib/theme";
+
+  interface PagefindData {
+    url: string;
+    excerpt: string;
+    meta: { title?: string };
+  }
+
+  interface Pagefind {
+    search: (query: string) => Promise<{ results: { data: () => Promise<PagefindData> }[] }>;
+  }
+
+  const pagefindPath = "/pagefind/pagefind.js";
+  let pagefind: Promise<Pagefind | undefined> | undefined;
+
+  const loadPagefind = () =>
+    (pagefind ??= import(pagefindPath).then(
+      (module: Pagefind) => module,
+      () => undefined,
+    ));
+
+  const dialog = document.querySelector<HTMLDialogElement>("[data-command-menu]");
+  const input = dialog?.querySelector<HTMLInputElement>("[data-command-input]");
+  const list = dialog?.querySelector<HTMLElement>("[data-command-list]");
+  const resultsGroup = dialog?.querySelector<HTMLElement>("[data-command-results-group]");
+  const results = dialog?.querySelector<HTMLElement>("[data-command-results]");
+  const empty = dialog?.querySelector<HTMLElement>("[data-command-empty]");
+
+  if (dialog && input && list && resultsGroup && results && empty) {
+    const itemClass = list.querySelector("[data-command-item]")?.className ?? "";
+    let active: HTMLElement | undefined;
+    let searchId = 0;
+
+    const visibleItems = () =>
+      [...list.querySelectorAll<HTMLElement>("[data-command-item]")].filter(
+        (element) => !element.hidden && !element.closest<HTMLElement>("[data-command-group]")?.hidden,
+      );
+
+    const select = (element: HTMLElement | undefined) => {
+      active?.setAttribute("aria-selected", "false");
+      active = element;
+      if (!element) {
+        input.removeAttribute("aria-activedescendant");
+        return;
+      }
+      element.id ||= `command-item-${Math.random().toString(36).slice(2)}`;
+      element.setAttribute("aria-selected", "true");
+      input.setAttribute("aria-activedescendant", element.id);
+      element.scrollIntoView({ block: "nearest" });
+    };
+
+    const updateEmpty = (query: string) => {
+      const nothing = visibleItems().length === 0;
+      empty.hidden = !nothing;
+      empty.textContent = nothing ? (dialog.dataset.emptyText ?? "").replace("{query}", query) : "";
+    };
+
+    const renderResults = (items: PagefindData[]) => {
+      results.replaceChildren(
+        ...items.map((data) => {
+          const link = document.createElement("a");
+          link.href = data.url.replace(/(\/index)?\.html$/, "") || "/";
+          link.setAttribute("role", "option");
+          link.dataset.commandItem = "";
+          link.className = `${itemClass} h-auto flex-col items-start gap-0.5 py-2`;
+          const title = document.createElement("span");
+          title.className = "text-foreground";
+          title.textContent = data.meta.title ?? link.pathname;
+          const excerpt = document.createElement("span");
+          excerpt.className = "line-clamp-2 text-xs [&_mark]:bg-transparent [&_mark]:font-medium [&_mark]:text-foreground";
+          excerpt.innerHTML = data.excerpt;
+          link.append(title, excerpt);
+          return link;
+        }),
+      );
+      resultsGroup.hidden = items.length === 0;
+    };
+
+    const search = async (query: string) => {
+      const id = ++searchId;
+      if (query.length < 2) {
+        renderResults([]);
+        return;
+      }
+      const engine = await loadPagefind();
+      const found = await engine?.search(query);
+      const items = await Promise.all((found?.results ?? []).slice(0, 5).map((result) => result.data()));
+      if (id !== searchId) return;
+      renderResults(items);
+      updateEmpty(query);
+      select(visibleItems()[0]);
+    };
+
+    const filter = () => {
+      const query = input.value.trim();
+      const needle = query.toLowerCase();
+      for (const element of list.querySelectorAll<HTMLElement>("[data-keywords]")) {
+        element.hidden = needle !== "" && !(element.dataset.keywords ?? "").toLowerCase().includes(needle);
+      }
+      for (const group of list.querySelectorAll<HTMLElement>("[data-command-group]:not([data-command-results-group])")) {
+        group.hidden = ![...group.querySelectorAll<HTMLElement>("[data-command-item]")].some((element) => !element.hidden);
+      }
+      updateEmpty(query);
+      select(visibleItems()[0]);
+      void search(query);
+    };
+
+    const open = () => {
+      if (dialog.open) return;
+      input.value = "";
+      renderResults([]);
+      filter();
+      dialog.showModal();
+      input.focus();
+      void loadPagefind();
+    };
+
+    const move = (step: number) => {
+      const items = visibleItems();
+      if (items.length === 0) return;
+      const index = active ? items.indexOf(active) : -1;
+      select(items[(index + step + items.length) % items.length]);
+    };
+
+    input.addEventListener("input", filter);
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown") move(1);
+      else if (event.key === "ArrowUp") move(-1);
+      else if (event.key === "Enter") active?.click();
+      else return;
+      event.preventDefault();
+    });
+
+    list.addEventListener("click", (event) => {
+      const target = (event.target as HTMLElement).closest<HTMLElement>("[data-command-item]");
+      if (!target) return;
+      if (target.dataset.themeSet) setTheme(target.dataset.themeSet as Theme);
+      dialog.close();
+    });
+    list.addEventListener("pointermove", (event) => {
+      const target = (event.target as HTMLElement).closest<HTMLElement>("[data-command-item]");
+      if (target && target !== active) select(target);
+    });
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    for (const trigger of document.querySelectorAll("[data-command-open]")) {
+      trigger.addEventListener("click", open);
+    }
+    document.addEventListener("keydown", (event) => {
+      const typing = (event.target as HTMLElement).closest("input, textarea, [contenteditable]");
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        if (dialog.open) dialog.close();
+        else open();
+      } else if (event.key === "/" && !typing && !dialog.open) {
+        event.preventDefault();
+        open();
+      }
+    });
+
+    if (!/Mac|iPhone|iPad/.test(navigator.userAgent)) {
+      for (const shortcut of document.querySelectorAll("[data-command-shortcut]")) shortcut.textContent = "Ctrl K";
+    }
+  }
+</script>
