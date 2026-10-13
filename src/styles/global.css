@@ -133,3 +133,9 @@
     color-scheme: dark;
   }
 }
+
+@layer components {
+  .prose :not(pre) > code {
+    overflow-wrap: anywhere;
+  }
+}
