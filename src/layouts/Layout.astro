@@ -77,7 +77,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
       document.documentElement.classList.toggle("dark", stored ? stored === "dark" : prefersDark);
     </script>
   </head>
-  <body class="min-h-dvh bg-background text-foreground antialiased">
+  <body class="flex min-h-dvh flex-col bg-background text-foreground antialiased">
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-30 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:ring-2 focus:ring-ring"
@@ -85,10 +85,10 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
       {t("a11y.skip")}
     </a>
     <Header />
-    <div class="px-4 md:px-6">
+    <div class="flex flex-1 flex-col px-4 md:px-6">
       <main
         id="main"
-        class="mx-auto min-h-[calc(100dvh-3.5rem)] max-w-5xl border-x border-border"
+        class="mx-auto flex w-full max-w-5xl flex-1 flex-col border-x border-border"
         data-pagefind-body={noindex ? undefined : ""}
       >
         <slot />
