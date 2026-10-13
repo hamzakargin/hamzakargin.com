@@ -1,12 +1,11 @@
 ---
-import { getLocale, localizePath, useTranslations } from "@/i18n/utils";
+import { getLocale, useTranslations } from "@/i18n/utils";
 import { ArrowUpRight } from "lucide-react";
 import { site } from "@/lib/site";
 import Section from "@/components/layout/Section.astro";
-import { badgeVariants } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-const locale = getLocale(Astro);
-const t = useTranslations(locale);
+
+const t = useTranslations(getLocale(Astro));
 ---
 
 <Section class="relative isolate flex flex-col items-center gap-6 py-20 text-center md:py-32">
@@ -15,10 +14,6 @@ const t = useTranslations(locale);
     class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(ellipse_at_top,var(--color-muted),transparent_70%)]"
   >
   </div>
-  <a href={localizePath("/#contact", locale)} class={badgeVariants({ variant: "outline" })}>
-    <span class="size-1.5 rounded-full bg-emerald-500"></span>
-    {t("hero.badge")}
-  </a>
   <h1 class="text-5xl font-extrabold tracking-[-0.06em] text-balance md:text-7xl">Hamza Kargin</h1>
   <p class="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
     <span class="font-medium text-foreground">{t("hero.role")}</span> {t("hero.leadBefore")}{" "}
