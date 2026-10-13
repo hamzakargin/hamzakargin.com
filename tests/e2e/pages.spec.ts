@@ -40,3 +40,10 @@ test("internal links resolve", async ({ page, request }) => {
     expect(response.status(), href).toBe(200);
   }
 });
+
+test("sitemap lists posts once and skips 404 pages", async ({ request }) => {
+  const sitemap = await (await request.get("/sitemap-0.xml")).text();
+  expect(sitemap).toContain("https://hamzakargin.com/blog/tanstack</loc>");
+  expect(sitemap).not.toContain("/ru/blog/tanstack");
+  expect(sitemap).not.toContain("404");
+});
