@@ -139,3 +139,8 @@
     overflow-wrap: anywhere;
   }
 }
+
+.prose blockquote p::before,
+.prose blockquote p::after {
+  content: none;
+}
