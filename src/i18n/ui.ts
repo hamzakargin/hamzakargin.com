@@ -18,7 +18,7 @@ export const intlLocales: Record<Locale, string> = {
 
 const en = {
   "meta.description":
-    "JavaScript Software Engineer. I build web applications and the systems behind them.",
+    "JavaScript Software Engineer based in Antalya. I build web applications end to end, from the database to the server they run on.",
   "a11y.skip": "Skip to content",
   "a11y.toggleTheme": "Toggle theme",
   "a11y.menu": "Menu",
@@ -109,7 +109,7 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
   en,
   ru: {
     "meta.description":
-      "JavaScript Software Engineer. Создаю веб-приложения и системы, на которых они работают.",
+      "JavaScript Software Engineer из Антальи. Создаю веб-приложения от начала до конца: от базы данных до сервера, на котором они работают.",
     "a11y.skip": "Перейти к содержанию",
     "a11y.toggleTheme": "Тема оформления",
     "a11y.menu": "Меню",
@@ -194,7 +194,7 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
   },
   tr: {
     "meta.description":
-      "JavaScript Software Engineer. Web uygulamaları ve onları çalıştıran sistemleri geliştiriyorum.",
+      "Antalya'da yaşayan JavaScript Software Engineer. Web uygulamalarını uçtan uca geliştiriyorum: veritabanından çalıştıkları sunucuya kadar.",
     "a11y.skip": "İçeriğe geç",
     "a11y.toggleTheme": "Tema",
     "a11y.menu": "Menü",
@@ -281,7 +281,7 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
   },
   de: {
     "meta.description":
-      "JavaScript Software Engineer. Ich entwickle Webanwendungen und die Systeme dahinter.",
+      "JavaScript Software Engineer aus Antalya. Ich entwickle Webanwendungen von Anfang bis Ende, von der Datenbank bis zum Server, auf dem sie laufen.",
     "a11y.skip": "Zum Inhalt springen",
     "a11y.toggleTheme": "Farbschema",
     "a11y.menu": "Menü",

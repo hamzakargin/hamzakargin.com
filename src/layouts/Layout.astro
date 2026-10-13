@@ -4,6 +4,7 @@ import CommandMenu from "@/components/layout/CommandMenu.astro";
 import Header from "@/components/layout/Header.astro";
 import { defaultLocale, intlLocales, locales } from "@/i18n/ui";
 import { cleanPath, getLocale, localizePath, stripLocale, useTranslations } from "@/i18n/utils";
+import { site } from "@/lib/site";
 import "@/styles/global.css";
 
 interface Props {
@@ -48,6 +49,7 @@ const imageUrl = image ? new URL(image, Astro.site).href : undefined;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
