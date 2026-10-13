@@ -13,7 +13,12 @@ bun install
 bun run dev
 ```
 
-Run `bun run check` before committing. It formats, lints, type checks and looks for unused code.
+Run `bun run check` before committing. It checks formatting, lint, types, unused code and spelling.
+
+```sh
+bun run test       # unit tests
+bun run test:e2e   # end-to-end tests against the production build
+```
 
 ## Structure
 

@@ -9,3 +9,8 @@ pre-commit:
       glob: "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}"
       run: bunx oxlint --fix {staged_files}
       stage_fixed: true
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: bunx commitlint --edit {1}

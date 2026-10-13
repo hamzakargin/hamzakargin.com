@@ -13,7 +13,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     permissions:
       contents: read
 
@@ -41,5 +41,17 @@ jobs:
       - name: Unused code check
         run: bun run knip
 
+      - name: Spell check
+        run: bun run spell
+
+      - name: Unit tests
+        run: bun run test
+
       - name: Build
         run: bun run build
+
+      - name: Install Playwright browser
+        run: bunx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: bun run test:e2e
