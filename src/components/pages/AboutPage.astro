@@ -5,6 +5,7 @@ import { Clock, Mail, MapPin } from "lucide-react";
 import me from "@/assets/me.png";
 import BrandIcon from "@/components/layout/BrandIcon.astro";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
+import PersonSchema from "@/components/layout/PersonSchema.astro";
 import Section from "@/components/layout/Section.astro";
 import { buttonVariants } from "@/components/ui/button";
 import Layout from "@/layouts/Layout.astro";
@@ -30,6 +31,7 @@ const socials = [
 <Layout title={`${t("about.title")} · Hamza Kargin`} description={t("about.description")}
   image={ogImagePath("about", locale)}
 >
+  <PersonSchema />
   <Section class="flex flex-col gap-10 py-12 md:py-20">
     <div class="mx-auto flex w-full max-w-2xl flex-col gap-10">
       <Breadcrumbs items={[{ label: t("about.title") }]} />

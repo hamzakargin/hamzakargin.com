@@ -4,6 +4,7 @@ import Education from "@/components/home/Education.astro";
 import Experience from "@/components/home/Experience.astro";
 import Recognition from "@/components/home/Recognition.astro";
 import Hero from "@/components/home/Hero.astro";
+import PersonSchema from "@/components/layout/PersonSchema.astro";
 import ShipLog from "@/components/home/ShipLog.astro";
 import Stack from "@/components/home/Stack.astro";
 import Writing from "@/components/home/Writing.astro";
@@ -14,6 +15,7 @@ import { getLocale } from "@/i18n/utils";
 ---
 
 <Layout image={ogImagePath("home", getLocale(Astro))}>
+  <PersonSchema />
   <Hero />
   <ShipLog />
   <Work />

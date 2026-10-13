@@ -1,0 +1,18 @@
+---
+import { getLocale, useTranslations } from "@/i18n/utils";
+import { site } from "@/lib/site";
+
+const t = useTranslations(getLocale(Astro));
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: t("about.role"),
+  url: Astro.site?.href,
+  email: `mailto:${site.email}`,
+  address: { "@type": "PostalAddress", addressLocality: "Antalya", addressCountry: "TR" },
+  sameAs: [site.github, site.linkedin, site.x, site.youtube],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
