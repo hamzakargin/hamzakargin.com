@@ -1,8 +1,20 @@
-# hamzakargin.com
+![hamzakargin.com](.github/assets/banner.svg)
 
-Personal website of Hamza Kargin, JavaScript Software Engineer.
+<p align="center">
+  <br/>
+  Personal website of <a href="https://hamzakargin.com">Hamza Kargin</a>, JavaScript Software Engineer &mdash;
+  <br/>
+  a static Astro site in four languages, with zero client-side React.
+  <br/><br/>
+</p>
 
-Built with [Astro](https://astro.build), [Tailwind CSS](https://tailwindcss.com) and [shadcn/ui](https://ui.shadcn.com). Static, available in English, Russian, Turkish and German.
+<div align="center">
+
+[![CI](https://github.com/hamzakargin/hamzakargin.com/actions/workflows/ci.yml/badge.svg)](https://github.com/hamzakargin/hamzakargin.com/actions/workflows/ci.yml)
+[![Deploy](https://github.com/hamzakargin/hamzakargin.com/actions/workflows/deploy.yml/badge.svg)](https://github.com/hamzakargin/hamzakargin.com/actions/workflows/deploy.yml)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+</div>
 
 ## Getting started
 
@@ -24,9 +36,12 @@ bun run test:e2e   # end-to-end tests against the production build
 
 ```text
 src/
+├── assets/       Images processed by Astro
 ├── components/   Astro components, shadcn/ui in ui/
 ├── content/      Blog posts, ship log, projects and profile data
-├── i18n/         Translations
+├── i18n/         Translations and locale helpers
+├── layouts/      Page shell
+├── lib/          Data loading, social images and helpers
 ├── pages/        Routes, localized under [lang]/
 └── styles/       Theme
 ```
@@ -47,6 +62,10 @@ Posts with `draft: true` are hidden. Social images, RSS, sitemap and search are 
 ## Deployment
 
 Pushes to `main` build a Docker image served by nginx and deploy it with [Dokploy](https://dokploy.com).
+
+## Contributing
+
+Found a bug or a translation mistake? Check out the [Contributing Guide](CONTRIBUTING.md).
 
 ## License
 
