@@ -1,7 +1,7 @@
 ---
 import "@fontsource/caveat/600.css";
 import { Image } from "astro:assets";
-import { Clock, Mail, MapPin } from "lucide-react";
+import { Clock, Download, Mail, MapPin } from "lucide-react";
 import me from "@/assets/me.png";
 import BrandIcon from "@/components/layout/BrandIcon.astro";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.astro";
@@ -18,6 +18,10 @@ import { intlLocales } from "@/i18n/ui";
 
 const locale = getLocale(Astro);
 const t = useTranslations(locale);
+
+const cvFiles = { en: "/cv/hamza-kargin-cv.pdf", ru: "/cv/hamza-kargin-cv-ru.pdf" };
+const cv = locale === "ru" ? cvFiles.ru : cvFiles.en;
+const otherCv = locale === "ru" ? cvFiles.en : cvFiles.ru;
 
 const socials = [
   { name: "GitHub", href: site.github },
@@ -69,6 +73,15 @@ const socials = [
               class={buttonVariants({ variant: "ghost", size: "icon-sm" })}
             >
               <Mail />
+            </a>
+          </div>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <a href={cv} download class={buttonVariants({ variant: "outline", size: "sm" })}>
+              <Download />
+              {t("about.cv")}
+            </a>
+            <a href={otherCv} download lang={locale === "ru" ? "en" : "ru"} class="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+              {t("about.cvOther")}
             </a>
           </div>
         </div>

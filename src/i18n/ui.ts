@@ -77,6 +77,8 @@ const en = {
   "about.title": "About",
   "about.description": "Who I am and what I’m working on.",
   "about.role": "JavaScript Software Engineer",
+  "about.cv": "Download CV",
+  "about.cvOther": "Русская версия",
   "about.location": "Antalya, Turkey",
   "about.greeting": "Hey there!",
   "about.intro":
@@ -168,6 +170,8 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "about.title": "Обо мне",
     "about.description": "Кто я и над чем работаю.",
     "about.role": "JavaScript Software Engineer",
+    "about.cv": "Скачать резюме",
+    "about.cvOther": "English version",
     "about.location": "Анталья, Турция",
     "about.greeting": "Привет!",
     "about.intro":
@@ -254,6 +258,8 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "about.title": "Hakkımda",
     "about.description": "Kimim ve neler üzerinde çalışıyorum.",
     "about.role": "JavaScript Software Engineer",
+    "about.cv": "CV’yi indir",
+    "about.cvOther": "Русская версия",
     "about.location": "Antalya, Türkiye",
     "about.greeting": "Selam!",
     "about.intro":
@@ -341,6 +347,8 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
     "about.title": "Über mich",
     "about.description": "Wer ich bin und woran ich arbeite.",
     "about.role": "JavaScript Software Engineer",
+    "about.cv": "Lebenslauf herunterladen",
+    "about.cvOther": "Русская версия",
     "about.location": "Antalya, Türkei",
     "about.greeting": "Hallo!",
     "about.intro":
