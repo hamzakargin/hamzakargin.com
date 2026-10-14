@@ -1,5 +1,4 @@
 ---
-import "@fontsource/caveat/600.css";
 import { Image } from "astro:assets";
 import { Clock, Download, Mail, MapPin } from "lucide-react";
 import me from "@/assets/me.png";
@@ -109,7 +108,7 @@ const socials = [
       </ul>
 
       <section class="flex flex-col gap-4">
-        <h2 class="font-[Caveat] text-4xl font-semibold">{t("about.greeting")}</h2>
+        <h2 class="font-(family-name:--font-caveat) text-4xl font-semibold">{t("about.greeting")}</h2>
         <ul class="flex flex-col gap-3 text-pretty [&>li]:flex [&>li]:gap-3">
           <li>
             <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-muted-foreground/50"></span>

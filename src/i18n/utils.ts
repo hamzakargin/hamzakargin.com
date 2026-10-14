@@ -1,3 +1,4 @@
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { defaultLocale, locales, ui, type Locale, type UiKey } from "@/i18n/ui";
 
 function toLocale(value: string | undefined): Locale {
@@ -16,9 +17,9 @@ export function useTranslations(locale: Locale) {
 }
 
 export function localizePath(path: string, locale: Locale) {
-  if (locale === defaultLocale) return path;
-  if (path === "/") return `/${locale}`;
-  return path.startsWith("/#") ? `/${locale}${path.slice(1)}` : `/${locale}${path}`;
+  const [pathname = "/", hash] = path.split("#");
+  const url = getRelativeLocaleUrl(locale, pathname.replace(/^\//, ""));
+  return hash === undefined ? url : `${url}#${hash}`;
 }
 
 export function stripLocale(pathname: string) {
