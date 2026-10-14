@@ -41,14 +41,14 @@ const minutes = Math.max(1, Math.round((post.body ?? "").split(/\s+/).length / 2
     class="fixed inset-x-0 top-14 z-20 h-0.5 origin-left scale-x-0 bg-foreground"
   >
   </div>
-  <Section class="py-12 md:py-20">
+  <Section class="py-16 md:py-24">
     <div class="mx-auto max-w-2xl">
       <article data-article lang="en" class="flex min-w-0 flex-col gap-10">
         <header class="flex flex-col gap-5">
           <Breadcrumbs
             items={[{ label: t("blog.title"), href: localizePath("/blog", locale) }, { label: post.data.title }]}
           />
-          <h1 class="text-4xl font-extrabold tracking-[-0.04em] text-balance md:text-5xl">
+          <h1 class="text-[40px] leading-[48px] font-[450] tracking-[-0.05em] md:text-5xl md:leading-[56px] md:tracking-[-0.06em] text-balance">
             {post.data.title}
           </h1>
           <p class="text-lg text-pretty text-muted-foreground">{post.data.summary}</p>
@@ -71,7 +71,7 @@ const minutes = Math.max(1, Math.round((post.body ?? "").split(/\s+/).length / 2
           </div>
         </details>
         <div
-          class="prose max-w-none prose-neutral dark:prose-invert prose-headings:scroll-mt-24 prose-headings:tracking-tight prose-a:underline-offset-4 prose-code:before:content-none prose-code:after:content-none"
+          class="prose max-w-none prose-neutral dark:prose-invert prose-headings:scroll-mt-24 prose-headings:font-[450] prose-h2:text-[28px] prose-h2:leading-[1.2] prose-h2:tracking-[-0.04em] prose-h3:text-[22px] prose-h3:tracking-[-0.03em] prose-a:underline-offset-4 prose-code:before:content-none prose-code:after:content-none"
         >
           <Content components={{ Table, TreeView }} />
         </div>
