@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.0.1...v1.1.0) (2026-10-14)
+
+
+### Features
+
+* add CV download to the about page ([6af72b0](https://github.com/hamzakargin/hamzakargin.com/commit/6af72b0c0f7e7c06a8fe7ea3899bd6181bba4af5))
+* outline the h mark behind the hero and lighten the name ([26c43b2](https://github.com/hamzakargin/hamzakargin.com/commit/26c43b219685d0f9beb439208ea39fb7994e8bca))
+
+
+### Documentation
+
+* restyle the readme after the astro readme ([3b7e751](https://github.com/hamzakargin/hamzakargin.com/commit/3b7e751e1a797125399a7e15c15341c018a79e07))
+
 ## [1.0.1](https://github.com/hamzakargin/hamzakargin.com/compare/v1.0.0...v1.0.1) (2026-10-13)
 
 
