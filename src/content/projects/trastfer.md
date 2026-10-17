@@ -1,5 +1,6 @@
 ---
 name: Trastfer
+logo: ../../assets/projects/trastfer.svg
 description:
   en: "Airport transfer booking platform in Antalya, live in four languages and self-hosted on a VPS."
   ru: "Платформа бронирования трансферов из аэропорта Антальи: работает на четырёх языках и размещена на собственном VPS."

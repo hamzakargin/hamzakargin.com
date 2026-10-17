@@ -23,15 +23,17 @@ const blog = defineCollection({
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
-  schema: z.object({
-    name: z.string(),
-    description: localized,
-    homepage: z.url().optional(),
-    github: z.url().optional(),
-    techstack: z.array(z.string()).default([]),
-    dateCreated: z.coerce.date(),
-    featured: z.boolean().default(false),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      logo: image().optional(),
+      description: localized,
+      homepage: z.url().optional(),
+      github: z.url().optional(),
+      techstack: z.array(z.string()).default([]),
+      dateCreated: z.coerce.date(),
+      featured: z.boolean().default(false),
+    }),
 });
 
 const log = defineCollection({

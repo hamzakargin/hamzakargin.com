@@ -85,6 +85,8 @@ const en = {
     "I’m Hamza Kargin — a JavaScript Software Engineer who builds web applications end to end, from the database to the server they run on.",
   "about.nowBefore": "Currently running",
   "about.nowAfter": ", an airport transfer booking platform, in production.",
+  "about.buildBefore": "Building",
+  "about.buildAfter": ", an open-source email delivery engine you run on your own server.",
   "about.personal":
     "Off the keyboard, you’ll find me at the gym, picking up Russian or out somewhere new with a camera.",
   "time.same": "same time as you",
@@ -178,6 +180,9 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
       "Я Хамза Каргин — JavaScript Software Engineer. Создаю веб-приложения целиком: от базы данных до сервера, на котором они работают.",
     "about.nowBefore": "Сейчас поддерживаю в продакшене",
     "about.nowAfter": " — платформу бронирования трансферов из аэропорта.",
+    "about.buildBefore": "Разрабатываю",
+    "about.buildAfter":
+      " — open-source движок доставки email, который работает на вашем собственном сервере.",
     "about.personal": "Вне работы хожу в зал, учу русский и выбираюсь в новые места с камерой.",
     "time.same": "у вас столько же",
     "time.ahead": "на {n} ч больше, чем у вас",
@@ -266,6 +271,8 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
       "Ben Hamza Kargin, JavaScript Software Engineer'ım. Web uygulamalarını uçtan uca geliştiriyorum: veritabanından üzerinde çalıştıkları sunucuya kadar.",
     "about.nowBefore": "Şu anda",
     "about.nowAfter": " adlı havalimanı transfer rezervasyon platformunu canlıda yürütüyorum.",
+    "about.buildBefore": "Kendi sunucunuzda çalışan açık kaynak e-posta teslim motoru",
+    "about.buildAfter": "’ı geliştiriyorum.",
     "about.personal":
       "Klavyeden uzaktayken spor salonundayım, Rusça öğreniyorum ya da elimde kamerayla yeni bir yerdeyim.",
     "time.same": "sizinle aynı saat",
@@ -355,6 +362,8 @@ export const ui: Record<Locale, Partial<Record<UiKey, string>>> = {
       "Ich bin Hamza Kargin, JavaScript Software Engineer. Ich entwickle Webanwendungen von Anfang bis Ende: von der Datenbank bis zum Server, auf dem sie laufen.",
     "about.nowBefore": "Aktuell betreibe ich",
     "about.nowAfter": ", eine Buchungsplattform für Flughafentransfers, im Produktivbetrieb.",
+    "about.buildBefore": "Ich entwickle",
+    "about.buildAfter": ", eine Open-Source-Engine für E-Mail-Zustellung auf dem eigenen Server.",
     "about.personal":
       "Abseits der Tastatur findet man mich im Fitnessstudio, beim Russischlernen oder mit der Kamera an neuen Orten.",
     "time.same": "gleiche Uhrzeit wie bei Ihnen",
