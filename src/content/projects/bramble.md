@@ -8,5 +8,5 @@ description:
 github: https://github.com/hamzakargin/bramble
 techstack: [Expo, Socket.IO, React, Bun, Express]
 dateCreated: 2026-02-04
-featured: true
+featured: false
 ---

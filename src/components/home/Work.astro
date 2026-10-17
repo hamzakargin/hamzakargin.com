@@ -1,6 +1,7 @@
 ---
 import { getLocale, pick, useTranslations } from "@/i18n/utils";
 import { ArrowUpRight } from "lucide-react";
+import { Image } from "astro:assets";
 import Section from "@/components/layout/Section.astro";
 import SectionHeading from "@/components/layout/SectionHeading.astro";
 import { getFeaturedProjects } from "@/lib/projects";
@@ -23,7 +24,10 @@ const t = useTranslations(locale);
             <Wrapper href={link} class="group block h-full rounded-(--radius-4xl) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
               <Card size="sm" className="h-full transition-shadow group-hover:shadow-lg">
                 <CardHeader>
-                  <CardTitle>{project.name}</CardTitle>
+                  <CardTitle className="flex items-center gap-2.5">
+                    {project.logo && <Image src={project.logo} alt="" width={24} height={24} class="size-6 shrink-0" />}
+                    {project.name}
+                  </CardTitle>
                   <CardDescription>{pick(project.description, locale)}</CardDescription>
                 </CardHeader>
                 <CardFooter className="mt-auto justify-between text-muted-foreground">
