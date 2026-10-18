@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.1.0...v1.2.0) (2026-10-18)
+
+
+### Features
+
+* add Bunzzle to work, log, about and CV ([#6](https://github.com/hamzakargin/hamzakargin.com/issues/6)) ([eca1622](https://github.com/hamzakargin/hamzakargin.com/commit/eca16227e4a105108b6b32ee4a89e2e61f540809))
+* deploy to Cloudflare Workers ([#8](https://github.com/hamzakargin/hamzakargin.com/issues/8)) ([fcb1c93](https://github.com/hamzakargin/hamzakargin.com/commit/fcb1c9314a56bdca9f4cdbdc3a661b5b6245158d))
+
 ## [1.1.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.0.1...v1.1.0) (2026-10-14)
 
 
