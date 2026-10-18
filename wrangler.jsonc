@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "hamzakargin-com",
   "compatibility_date": "2026-10-18",
+  "routes": [{ "pattern": "hamzakargin.com", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     "html_handling": "drop-trailing-slash",
