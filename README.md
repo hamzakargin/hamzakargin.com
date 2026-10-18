@@ -61,7 +61,18 @@ Posts with `draft: true` are hidden. Social images, RSS, sitemap and search are 
 
 ## Deployment
 
-Pushes to `main` build a Docker image served by nginx and deploy it with [Dokploy](https://dokploy.com).
+Pushes to `main` build the site and deploy it to [Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/).
+
+### Self-hosting
+
+The site is fully static, so it also runs anywhere with Docker. The image serves the build with nginx:
+
+```sh
+docker build -t hamzakargin.com .
+docker run -p 8080:80 hamzakargin.com
+```
+
+Headers and redirects live in `public/_headers` and `public/_redirects` for Workers, and in `nginx.conf` for Docker. Keep them in sync.
 
 ## Contributing
 

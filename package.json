@@ -25,7 +25,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "check": "bun run format:check && bun run lint && bun run typecheck && bun run knip && bun run spell",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.3",
@@ -64,7 +65,8 @@
     "satori": "^0.52.0",
     "sharp": "^0.35.5",
     "typescript": "^6",
-    "vitest": "^5.0.4"
+    "vitest": "^5.0.4",
+    "wrangler": "^4.151.1"
   },
   "engines": {
     "bun": ">=1.4.0",
