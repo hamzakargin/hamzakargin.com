@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.2.0...v1.3.0) (2026-10-28)
+
+
+### Features
+
+* update about photo ([2cd2efb](https://github.com/hamzakargin/hamzakargin.com/commit/2cd2efb9ee7950ce9cb613f611944aab2e678dcc))
+* update cv photo and intro wording ([ab1fec5](https://github.com/hamzakargin/hamzakargin.com/commit/ab1fec530620d1e3a5bb344e89d65330694f9304))
+
+
+### Bug Fixes
+
+* show Cloudflare Workers as host in the footer ([fb45fe1](https://github.com/hamzakargin/hamzakargin.com/commit/fb45fe16d94850f28db550ada5f88df9fb94c962))
+
 ## [1.2.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.1.0...v1.2.0) (2026-10-18)
 
 
