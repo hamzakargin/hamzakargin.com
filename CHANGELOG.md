@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.3.0...v1.4.0) (2026-11-15)
+
+
+### Features
+
+* add node.js contribution to log, about and cv ([88778db](https://github.com/hamzakargin/hamzakargin.com/commit/88778db353cd2aa3ee7ba7d721c58c3e6317348f))
+
 ## [1.3.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.2.0...v1.3.0) (2026-11-02)
 
 
