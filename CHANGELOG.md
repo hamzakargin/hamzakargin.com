@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.4.0...v1.5.0) (2026-11-24)
+
+
+### Features
+
+* add node.js highwatermark fixes to log and cv ([68c5a9f](https://github.com/hamzakargin/hamzakargin.com/commit/68c5a9f4d8ef95a510a4a1a3a8ef28a0e07338d6))
+* shorten node.js line in cv ([e56d6ee](https://github.com/hamzakargin/hamzakargin.com/commit/e56d6ee0bc4e7a43026ee822c198d7793b405e45))
+
 ## [1.4.0](https://github.com/hamzakargin/hamzakargin.com/compare/v1.3.0...v1.4.0) (2026-11-15)
 
 
