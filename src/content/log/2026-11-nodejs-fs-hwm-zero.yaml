@@ -1,0 +1,8 @@
+date: 2026-11-23
+label: oss
+title:
+  en: Found and fixed fs read streams ending without data in Node.js core
+  ru: "Нашёл и исправил в ядре Node.js потоки чтения fs, которые завершались без данных"
+  tr: "Node.js çekirdeğinde veri okumadan biten fs okuma akışlarını bulup düzelttim"
+  de: "fs-Lesestreams, die ohne Daten endeten, im Node.js-Core gefunden und behoben"
+link: https://github.com/nodejs/node/pull/67669

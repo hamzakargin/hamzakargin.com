@@ -1,0 +1,8 @@
+date: 2026-11-23
+label: oss
+title:
+  en: Found and fixed a hang in Node.js streams with construct() and highWaterMark 0
+  ru: "Нашёл и исправил зависание потоков Node.js с construct() и highWaterMark 0"
+  tr: "Node.js akışlarında construct() ve highWaterMark 0 ile oluşan takılmayı bulup düzelttim"
+  de: "Hänger in Node.js-Streams mit construct() und highWaterMark 0 gefunden und behoben"
+link: https://github.com/nodejs/node/pull/67670
